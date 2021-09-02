@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterappleman/ui/home/home.dart';
 import 'package:flutterappleman/ui/home/navigationBar.dart';
 
 class HomeStack extends StatefulWidget {
@@ -18,6 +19,9 @@ class _HomeStackState extends State<HomeStack> {
         switch (settings.name) {
           case 'homeStack/NavigationBar':
             builder = (BuildContext _) => NavigationBar();
+            break;
+          case 'homeStack/Home':
+            builder = (BuildContext _) => Home();
             break;
           default:
             throw Exception('Invalid route: ${settings.name}');

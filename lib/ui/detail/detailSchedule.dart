@@ -460,7 +460,7 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                 child: Text('รอการยืนยัน',
                                     style: MyStyle().whiteStyle()),
                                 onPressed: () {},
-                              )
+                              ),
                             ],
                           ),
                           Divider(
@@ -728,7 +728,14 @@ class _DetailScheduleState extends State<DetailSchedule> {
                       ],
                     ),
                   )),
-              Padding(padding: EdgeInsets.all(10), child: bluttondownload()),
+              MaterialButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(5))),
+                onPressed: () {},
+                color: MyStyle().buttongray,
+                child: Text('ดาวน์โหลดหนังสือมอบอำนาจ',
+                    style: MyStyle().whiteStyle()),
+              ),
               cardCar(),
               cardCarEditDelete(),
               cardCarEditDelete(),
@@ -739,16 +746,6 @@ class _DetailScheduleState extends State<DetailSchedule> {
       ),
     );
   }
-}
-
-Widget bluttondownload() {
-  return MaterialButton(
-    shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(5))),
-    onPressed: () {},
-    color: MyStyle().buttongray,
-    child: Text('ดาวน์โหลดหนังสือมอบอำนาจ', style: MyStyle().whiteStyle()),
-  );
 }
 
 Widget cardCar() {

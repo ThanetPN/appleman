@@ -23,8 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  
-  validators: ^3.0.0
+
   material_dialog: ^1.0.0-nullsafety.1
   intl: ^0.17.0
   path_provider: ^2.0.2
@@ -37,6 +36,11 @@ dependencies:
   flutter_polyline_points: ^1.0.0
   url_launcher: ^6.0.9
   http: ^0.13.3
+  shared_preferences: ^2.0.7
+  another_flushbar: ^1.10.24
+  jwt_decode: ^0.3.1
+  form_field_validator: ^1.1.0
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

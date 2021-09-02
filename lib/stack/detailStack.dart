@@ -22,15 +22,15 @@ class _DetailStackState extends State<DetailStack> {
           case 'detailstack/detail':
             builder = (BuildContext _) => DetailSchedule();
             break;
-          case 'detailstack/camera':
-            builder = (BuildContext _) => Camera();
-            break;
-          case 'detailstack/picture':
-            builder = (BuildContext _) => Picture();
-            break;
-          case 'detailstack/map':
-            builder = (BuildContext _) => MapsGoogle();
-            break;
+          // case 'detailstack/camera':
+          //   builder = (BuildContext _) => Camera();
+          //   break;
+          // case 'detailstack/picture':
+          //   builder = (BuildContext _) => Picture();
+          //   break;
+          // case 'detailstack/map':
+          //   builder = (BuildContext _) => MapsGoogle();
+          //   break;
           default:
             throw Exception('Invalid route: ${settings.name}');
         }

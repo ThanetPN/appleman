@@ -8,8 +8,14 @@ import 'package:flutterappleman/ui/home/navigationBar.dart';
 import 'package:flutterappleman/ui/login/login.dart';
 import 'package:flutterappleman/ui/profile/editProfile.dart';
 import 'package:flutterappleman/ui/profile/profile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+late String? token;
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  token = prefs.getString('token');
+
   runApp(MyApp());
 }
 
@@ -21,7 +27,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(primarySwatch: Colors.red),
       initialRoute: '/',
       routes: <String, WidgetBuilder>{
-        '/': (context) => NavigationBar(),
+        '/': (context) => token == null ? Login() : NavigationBar(),
+        '/navigationBar': (context) => NavigationBar(),
         '/login': (context) => Login(),
         '/detail': (context) => DetailSchedule(),
         '/map': (context) => MapsGoogle(),
