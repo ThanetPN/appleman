@@ -1,28 +1,40 @@
 import 'dart:async';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterappleman/constants/Mystyle.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class MapsGoogle extends StatefulWidget {
-  MapsGoogle({Key? key}) : super(key: key);
+class DropOffLocation extends StatefulWidget {
+  DropOffLocation({Key? key}) : super(key: key);
 
   @override
-  _MapsGoogleState createState() => _MapsGoogleState();
+  _DropOffLocationState createState() => _DropOffLocationState();
 }
 
-class _MapsGoogleState extends State<MapsGoogle> {
+class _DropOffLocationState extends State<DropOffLocation> {
   Completer<GoogleMapController> _controller = Completer();
   late BitmapDescriptor _markerIcon;
 
   _openOnGoogleMapApp(double latitude, double longitude) async {
-    String googleUrl =
-        'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude';
+    String googleUrl = 'https://www.google.com/maps/search/?api=1&query=' +
+        '$latitude,$longitude';
     if (await canLaunch(googleUrl)) {
       await launch(googleUrl);
     } else {
-      print('Could not open the map.');
+      Flushbar(
+        title: 'Error Google Map',
+        message: 'Could not open the map.',
+        backgroundColor: MyStyle().redyColor,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.redAccent,
+      )..show(context);
     }
   }
 
@@ -38,17 +50,23 @@ class _MapsGoogleState extends State<MapsGoogle> {
   @override
   Widget build(BuildContext context) {
     _createMarkerImageFromAsset(context);
+
+    Map google = ModalRoute.of(context)!.settings.arguments as Map;
+
+    late double _toLatitude = double.parse("${google['toLatitude']}");
+    late double _toLongitude = double.parse("${google['toLongitude']}");
+
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
-          title: Text('Google Map',
+          title: Text('สถานที่ส่งรถ',
               style: const TextStyle(
                   fontWeight: FontWeight.bold, color: Colors.white))),
       backgroundColor: MyStyle().garyAllColor,
       body: GoogleMap(
         mapType: MapType.normal,
         initialCameraPosition: CameraPosition(
-          target: LatLng(13.6900043, 100.7479237),
+          target: LatLng(_toLatitude, _toLongitude),
           zoom: 12,
         ),
         onMapCreated: (GoogleMapController controller) {
@@ -57,12 +75,12 @@ class _MapsGoogleState extends State<MapsGoogle> {
         markers: {
           Marker(
               icon: _markerIcon,
-              markerId: MarkerId("1"),
-              position: LatLng(13.6900043, 100.7479237),
+              markerId: MarkerId("${google['requestId']}"),
+              position: LatLng(_toLatitude, _toLongitude),
               infoWindow: InfoWindow(
-                  title: "สนามบินสุวรรณภูมิ",
-                  snippet: "สนามบินนานาชาติของประเทศไทย"),
-              onTap: () => _openOnGoogleMapApp(13.6900043, 100.7479237)),
+                  title: '${google['wareHouseNameTha']}',
+                  snippet: "${google['wareHouseNameEng']}"),
+              onTap: () => _openOnGoogleMapApp(_toLatitude, _toLongitude)),
         },
       ),
     );

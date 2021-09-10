@@ -1,4 +1,4 @@
-// To parse this JSON data, do
+// To parse this JSON homeCard, do
 //
 //     final cardModel = cardModelFromJson(jsonString);
 
@@ -6,25 +6,26 @@ import 'dart:convert';
 
 CardModel cardModelFromJson(String str) => CardModel.fromJson(json.decode(str));
 
-String cardModelToJson(CardModel data) => json.encode(data.toJson());
+String cardModelToJson(CardModel homeCard) => json.encode(homeCard.toJson());
 
 class CardModel {
   CardModel({
-    required this.data,
+    required this.homeCard,
     required this.totalCount,
     required this.isSuccess,
     this.errorMessages,
     this.errorFieldMessages,
   });
 
-  List<Datum> data;
+  List<InRequestHome> homeCard;
   int totalCount;
   bool isSuccess;
   dynamic errorMessages;
   dynamic errorFieldMessages;
 
   factory CardModel.fromJson(Map<String, dynamic> json) => CardModel(
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        homeCard: List<InRequestHome>.from(
+            json["data"].map((x) => InRequestHome.fromJson(x))),
         totalCount: json["totalCount"],
         isSuccess: json["isSuccess"],
         errorMessages: json["errorMessages"],
@@ -32,7 +33,7 @@ class CardModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "homeCard": List<dynamic>.from(homeCard.map((x) => x.toJson())),
         "totalCount": totalCount,
         "isSuccess": isSuccess,
         "errorMessages": errorMessages,
@@ -40,8 +41,8 @@ class CardModel {
       };
 }
 
-class Datum {
-  Datum({
+class InRequestHome {
+  InRequestHome({
     required this.requestId,
     required this.sellerCode,
     required this.sellerName,
@@ -99,7 +100,7 @@ class Datum {
   bool active;
   int amount;
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory InRequestHome.fromJson(Map<String, dynamic> json) => InRequestHome(
         requestId: json["requestID"],
         sellerCode: json["sellerCode"],
         sellerName: json["sellerName"],

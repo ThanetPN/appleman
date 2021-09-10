@@ -1,7 +1,8 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterappleman/constants/Mystyle.dart';
 import 'package:flutterappleman/models/CardModel.dart';
-import 'package:flutterappleman/ui/home/utils.dart';
+import 'package:flutterappleman/ui/home/setCalendar.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'dart:convert' as convert;
@@ -13,15 +14,15 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<Datum> data = [];
+  List<InRequestHome> homeCard = [];
   bool isLoading = true;
   late String wareHouseNameTha;
   var EventCalendar = DateFormat('yyyy-MM-dd').format(DateTime.now());
   final d = new DateFormat('yyyy-MM-dd');
 
-  _getData() async {
+  _getCalendarByDay() async {
     final url = Uri.parse(
-        'https://apps.softsquaregroup.com/AAA.AppleMan.API/api/Requst/GetRequest?calendarEvent=' +
+        'https://apps.softsquaregroup.com/AAA.AppleMan.API/api/Requst/GetRequestByDay?calendarEventDay=' +
             EventCalendar.toString());
     //print(url);
     final http.Response response = await http.get(url);
@@ -29,12 +30,23 @@ class _HomeState extends State<Home> {
       final CardModel home =
           CardModel.fromJson(convert.jsonDecode(response.body));
       setState(() {
-        data = home.data;
+        homeCard = home.homeCard;
         isLoading = false;
       });
       //print(response.body);
     } else {
-      print('error from backend ${response.statusCode}');
+      Flushbar(
+        title: 'เกิดข้อผิดพลาด',
+        message: 'error from backend ${response.statusCode}',
+        backgroundColor: MyStyle().redyColor,
+        icon: Icon(
+          Icons.error,
+          size: 28.0,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.redAccent,
+      )..show(context);
     }
   }
 
@@ -43,15 +55,14 @@ class _HomeState extends State<Home> {
   RangeSelectionMode rangeSelectionMode = RangeSelectionMode
       .toggledOff; // Can be toggled on/off by longpressing a date
   DateTime _focusedDay = DateTime.now();
-  //DateTime? selectedDay;
-  DateTime? selectedDay = DateTime.now();
+  DateTime? selectedDay;
   DateTime? rangeStart;
   DateTime? rangeEnd;
 
   @override
   void initState() {
     super.initState();
-    _getData();
+    _getCalendarByDay();
 
     selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(getEventsForDay(selectedDay!));
@@ -86,7 +97,7 @@ class _HomeState extends State<Home> {
       rangeSelectionMode = RangeSelectionMode.toggledOff;
     });
     EventCalendar = d.format(focusedDay);
-    _getData();
+    _getCalendarByDay();
     _selectedEvents.value = getEventsForDay(selectedDay);
   }
 
@@ -131,8 +142,6 @@ class _HomeState extends State<Home> {
                           firstDay: kFirstDay,
                           lastDay: kLastDay,
                           focusedDay: _focusedDay,
-                          // selectedDayPredicate: (day) =>
-                          //     isSameDay(selectedDay, day),
                           selectedDayPredicate: (DateTime date) {
                             return isSameDay(selectedDay, date);
                           },
@@ -143,7 +152,6 @@ class _HomeState extends State<Home> {
                           eventLoader: getEventsForDay,
                           startingDayOfWeek: StartingDayOfWeek.sunday,
                           calendarStyle: CalendarStyle(
-                            // Use `CalendarStyle` to customize the UI
                             outsideDaysVisible: false,
                           ),
                           onDaySelected: _onDaySelected,
@@ -168,7 +176,27 @@ class _HomeState extends State<Home> {
                     Expanded(
                       child: ValueListenableBuilder<List<Event>>(
                         valueListenable: _selectedEvents,
-                        builder: (context, value, _) {
+                        builder: (context, items, _) {
+                          // return ListView.builder(
+                          //   itemCount: items.length,
+                          //   itemBuilder: (context, index) {
+                          //     return Container(
+                          //       margin: const EdgeInsets.symmetric(
+                          //         horizontal: 12.0,
+                          //         vertical: 4.0,
+                          //       ),
+                          //       decoration: BoxDecoration(
+                          //         border: Border.all(),
+                          //         borderRadius: BorderRadius.circular(12.0),
+                          //       ),
+                          //       child: ListTile(
+                          //         onTap: () => print('${items[index]}'),
+                          //         title: Text('${items[index]}'),
+                          //       ),
+                          //     );
+                          //   },
+                          // );
+
                           return ListView.separated(
                               itemBuilder: (BuildContext context, int index) {
                                 return Padding(
@@ -181,10 +209,10 @@ class _HomeState extends State<Home> {
                                           onTap: () {
                                             Navigator.pushNamed(
                                                 context, '/detail', arguments: {
-                                              'requestID':
-                                                  data[index].requestId,
-                                              'sellerName':
-                                                  data[index].sellerName
+                                              'RequestID':
+                                                  homeCard[index].requestId,
+                                              'EventCalendar':
+                                                  d.format(_focusedDay)
                                             });
                                           },
                                           child: Column(
@@ -233,7 +261,8 @@ class _HomeState extends State<Home> {
                                                               SizedBox(
                                                                   width: 10),
                                                               Text(
-                                                                  data[index]
+                                                                  homeCard[
+                                                                          index]
                                                                       .wareHouseNameTha,
                                                                   style: MyStyle()
                                                                       .garyStyle())
@@ -249,7 +278,8 @@ class _HomeState extends State<Home> {
                                                               SizedBox(
                                                                   width: 10),
                                                               Text(
-                                                                  data[index]
+                                                                  homeCard[
+                                                                          index]
                                                                       .locationNameTha,
                                                                   style: MyStyle()
                                                                       .garyStyle())
@@ -278,7 +308,7 @@ class _HomeState extends State<Home> {
                                                                         width:
                                                                             10),
                                                                     Text(f.format(
-                                                                        data[index]
+                                                                        homeCard[index]
                                                                             .endEffectiveDate))
                                                                   ]),
                                                               SizedBox(
@@ -292,7 +322,7 @@ class _HomeState extends State<Home> {
                                                                 SizedBox(
                                                                     width: 10),
                                                                 Text(
-                                                                    '${data[index].amount.toString()} คัน')
+                                                                    '${homeCard[index].amount.toString()} คัน')
                                                               ]),
                                                             ],
                                                           ),
@@ -312,7 +342,8 @@ class _HomeState extends State<Home> {
                                                                   onPressed:
                                                                       () {},
                                                                   child: Text(
-                                                                      data[index]
+                                                                      homeCard[
+                                                                              index]
                                                                           .requestStatus,
                                                                       style: MyStyle()
                                                                           .whiteStyle()),
@@ -327,8 +358,8 @@ class _HomeState extends State<Home> {
                                                         children: <Widget>[
                                                           Row(
                                                             children: <Widget>[
-                                                              Text(data[index]
-                                                                  .remark)
+                                                              Text(
+                                                                  'หมายเหตุ : ${homeCard[index].remark.toString()} น.')
                                                             ],
                                                           ),
                                                           Row(
@@ -370,7 +401,7 @@ class _HomeState extends State<Home> {
                               separatorBuilder:
                                   (BuildContext context, int index) =>
                                       Divider(),
-                              itemCount: data.length);
+                              itemCount: homeCard.length);
                         },
                       ),
                     ),

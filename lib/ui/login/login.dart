@@ -18,7 +18,6 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
-  bool isLoading = false;
   late SharedPreferences prefs;
 
   _initPrefs() async {
@@ -31,7 +30,7 @@ class _LoginState extends State<Login> {
     _initPrefs();
   }
 
-  _login(Map<String, dynamic> values) async {
+  _login() async {
     final url = Uri.parse(
         'https://apps.softsquaregroup.com/AAA.AppleMan.Authen/api/Authentication');
     //print(url);
@@ -40,15 +39,11 @@ class _LoginState extends State<Login> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: convert.jsonEncode({
-          'password': values['password'],
-          'clientId': 'Mobile',
-          'userCode': values['userCode'],
+          "userCode": userCode.text,
+          "clientId": "Mobile",
+          "password": password.text,
         }));
-
     if (response.statusCode == 200) {
-      setState(() {
-        isLoading = false;
-      });
       //print(response.body);
       //save token
       await prefs.setString('token', response.body);
@@ -60,9 +55,6 @@ class _LoginState extends State<Login> {
       Navigator.pushNamedAndRemoveUntil(
           context, '/navigationBar', (Route<dynamic> route) => false);
     } else {
-      setState(() {
-        isLoading = false;
-      });
       var feedback = convert.jsonDecode(response.body);
       Flushbar(
         title: '${feedback['errorMessages']}',
@@ -90,6 +82,9 @@ class _LoginState extends State<Login> {
     //print(prefs.setString('profile', convert.jsonEncode(payload)));
   }
 
+  final userCode = TextEditingController();
+  final password = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final userNameValidator = MultiValidator([
@@ -102,71 +97,66 @@ class _LoginState extends State<Login> {
     ]);
 
     return Scaffold(
-        body: Container(
-      child: Center(
-        child: SingleChildScrollView(
-            child: Column(children: <Widget>[
-          Logo(),
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: FormBuilder(
-              key: _fbKey,
-              initialValue: {'userCode': '', 'password': ''},
-              child: Column(
-                children: <Widget>[
-                  FormBuilderTextField(
-                      name: "userCode",
-                      maxLines: 1,
-                      keyboardType: TextInputType.visiblePassword,
-                      decoration: InputDecoration(
-                          labelText: "UserCode",
-                          labelStyle: TextStyle(color: Colors.black87),
-                          fillColor: Colors.white,
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                          errorStyle: TextStyle(color: Colors.red)),
-                      validator: userNameValidator),
-                  SizedBox(height: 20),
-                  FormBuilderTextField(
-                      name: "password",
-                      maxLines: 1,
-                      obscureText: true,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                          labelText: "Password",
-                          labelStyle: TextStyle(color: Colors.black87),
-                          fillColor: Colors.white,
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                          errorStyle: TextStyle(color: Colors.red)),
-                      validator: passwordValidator),
-                  SizedBox(height: 30),
-                  SizedBox(
-                    width: 200,
-                    child: MaterialButton(
-                      onPressed: () {
-                        if (_fbKey.currentState!.saveAndValidate()) {
-                          _login(_fbKey.currentState!.value);
-                        }
-                      },
-                      child: Text('Log In',
-                          style: TextStyle(fontSize: 20, color: Colors.white)),
-                      padding: EdgeInsets.all(15),
-                      color: MyStyle().blueSkyColor,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
+        body: ListView(
+      children: [
+        Logo(),
+        FormBuilder(
+            key: _fbKey,
+            initialValue: {'userCode': '', 'password': ''},
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(
+                      left: MediaQuery.of(context).size.width * 0.05,
+                      right: MediaQuery.of(context).size.width * 0.05),
+                  child: TextFormField(
+                    controller: userCode,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'UserCode',
                     ),
+                    validator: userNameValidator,
                   ),
-                ],
-              ),
-            ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(
+                      left: MediaQuery.of(context).size.width * 0.05,
+                      right: MediaQuery.of(context).size.width * 0.05,
+                      top: 10),
+                  child: TextFormField(
+                      controller: password,
+                      keyboardType: TextInputType.visiblePassword,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Password',
+                      ),
+                      validator: passwordValidator),
+                ),
+              ],
+            )),
+        Container(
+          margin: EdgeInsets.only(top: 30),
+        ),
+        Container(
+          height: 50,
+          margin: EdgeInsets.only(
+              left: MediaQuery.of(context).size.width * 0.05,
+              right: MediaQuery.of(context).size.width * 0.05,
+              top: 10),
+          child: MaterialButton(
+            onPressed: () => {
+              if (_fbKey.currentState!.saveAndValidate()) {_login()}
+            },
+            child: Text("Login",
+                style: TextStyle(fontSize: 20, color: Colors.white)),
+            color: Colors.blue,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           ),
-        ])),
-      ),
+        ),
+      ],
     ));
   }
 }

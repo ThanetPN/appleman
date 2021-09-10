@@ -14,7 +14,6 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
-
   Map<String, dynamic> profile = {
     'UserCode': '',
     'UserName': '',
@@ -243,143 +242,185 @@ class _ProfileState extends State<Profile> {
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         child: Container(
-                          height: 500,
-                          child: Padding(
-                              padding: EdgeInsets.all(30),
-                              child: FormBuilder(
-                                  key: _fbKey,
-                                  initialValue: {
-                                    'password': '',
-                                    'passwordNew': '',
-                                    'confirmPassword': ''
-                                  },
-                                  child: Column(
+                            height: 500,
+                            child: ListView(
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(top: 30),
+                                    ),
+                                    Text('เปลี่ยน Password',
+                                        style: MyStyle().blueStyle()),
+                                    FormBuilder(
+                                        key: _fbKey,
+                                        initialValue: {
+                                          'password': '',
+                                          'passwordNew': '',
+                                          'confirmPassword': ''
+                                        },
+                                        child: Column(children: [
+                                          Container(
+                                              margin: EdgeInsets.only(
+                                                  left: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.05,
+                                                  right: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.05,
+                                                  top: 30),
+                                              child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text('Password เก่า',
+                                                        style: MyStyle()
+                                                            .garyStyle()),
+                                                    SizedBox(height: 10),
+                                                    TextFormField(
+                                                      //controller: password,
+                                                      keyboardType:
+                                                          TextInputType
+                                                              .visiblePassword,
+                                                      obscureText: true,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        border:
+                                                            OutlineInputBorder(),
+                                                        labelText: 'password',
+                                                      ),
+                                                    ),
+                                                  ])),
+                                          Container(
+                                              margin: EdgeInsets.only(
+                                                  left: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.05,
+                                                  right: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.05,
+                                                  top: 20),
+                                              child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text('Password ใหม่',
+                                                        style: MyStyle()
+                                                            .garyStyle()),
+                                                    SizedBox(height: 10),
+                                                    TextFormField(
+                                                      //controller: password,
+                                                      keyboardType:
+                                                          TextInputType
+                                                              .visiblePassword,
+                                                      obscureText: true,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        border:
+                                                            OutlineInputBorder(),
+                                                        labelText:
+                                                            'passwordNew',
+                                                      ),
+                                                    ),
+                                                  ])),
+                                          Container(
+                                              margin: EdgeInsets.only(
+                                                  left: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.05,
+                                                  right: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.05,
+                                                  top: 20),
+                                              child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text('ยืนยัน Password ใหม่',
+                                                        style: MyStyle()
+                                                            .garyStyle()),
+                                                    SizedBox(height: 10),
+                                                    TextFormField(
+                                                      //controller: password,
+                                                      keyboardType:
+                                                          TextInputType
+                                                              .visiblePassword,
+                                                      obscureText: true,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        border:
+                                                            OutlineInputBorder(),
+                                                        labelText:
+                                                            'confirmPassword',
+                                                      ),
+                                                    ),
+                                                  ])),
+                                        ])),
+                                  ],
+                                ),
+                                Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
                                     children: [
-                                      Text('เปลี่ยน Password',
-                                          style: MyStyle().blueStyle()),
-                                      SizedBox(height: 20),
-                                      Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text('Password เก่า',
-                                                style: MyStyle().garyStyle()),
-                                            SizedBox(height: 10),
-                                            FormBuilderTextField(
-                                                name: "password",
-                                                maxLines: 1,
-                                                keyboardType: TextInputType
-                                                    .visiblePassword,
-                                                decoration: InputDecoration(
-                                                    labelText: "",
-                                                    labelStyle: TextStyle(
-                                                        color: Colors.black87),
-                                                    fillColor: Colors.white,
-                                                    filled: true,
-                                                    border: OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    10))),
-                                                    errorStyle: TextStyle(
-                                                        color: Colors.red)),
-                                                validator: passwordValidator),
-                                          ]),
-                                      SizedBox(height: 20),
-                                      Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text('Password ใหม่',
-                                                style: MyStyle().garyStyle()),
-                                            SizedBox(height: 10),
-                                            FormBuilderTextField(
-                                                name: "passwordNew",
-                                                maxLines: 1,
-                                                keyboardType: TextInputType
-                                                    .visiblePassword,
-                                                decoration: InputDecoration(
-                                                    labelText: "",
-                                                    labelStyle: TextStyle(
-                                                        color: Colors.black87),
-                                                    fillColor: Colors.white,
-                                                    filled: true,
-                                                    border: OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    10))),
-                                                    errorStyle: TextStyle(
-                                                        color: Colors.red)),
-                                                validator: passwordValidator),
-                                          ]),
-                                      SizedBox(height: 20),
-                                      Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text('ยืนยัน Password ใหม่',
-                                                style: MyStyle().garyStyle()),
-                                            SizedBox(height: 10),
-                                            FormBuilderTextField(
-                                                name: "confirmPassword",
-                                                maxLines: 1,
-                                                keyboardType: TextInputType
-                                                    .visiblePassword,
-                                                decoration: InputDecoration(
-                                                    labelText: "",
-                                                    labelStyle: TextStyle(
-                                                        color: Colors.black87),
-                                                    fillColor: Colors.white,
-                                                    filled: true,
-                                                    border: OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    10))),
-                                                    errorStyle: TextStyle(
-                                                        color: Colors.red)),
-                                                validator: passwordValidator),
-                                          ]),
-                                      SizedBox(height: 20),
-                                      Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: <Widget>[
-                                            MaterialButton(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(5))),
-                                              color: Color(0xFFD8D8D8),
-                                              textColor: Colors.white,
-                                              onPressed: () {
-                                                Navigator.pushNamed(
-                                                    context, '');
-                                              },
-                                              child: Text('ยกเลิก',
-                                                  style:
-                                                      MyStyle().whiteStyle()),
-                                            ),
-                                            MaterialButton(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(5))),
-                                              color: Color(0xFF82DD55),
-                                              textColor: Colors.white,
-                                              onPressed: () {
-                                                Navigator.pushNamed(
-                                                    context, '');
-                                              },
-                                              child: Text('ยืนยัน',
-                                                  style:
-                                                      MyStyle().whiteStyle()),
-                                            )
-                                          ])
-                                    ],
-                                  ))),
-                        ),
+                                      Container(
+                                          height: 50,
+                                          margin: EdgeInsets.only(
+                                              left: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.05,
+                                              right: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.05,
+                                              top: 30),
+                                          child: MaterialButton(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(5))),
+                                            color: Color(0xFFD8D8D8),
+                                            textColor: Colors.white,
+                                            onPressed: () {
+                                              Navigator.pushNamed(context, '');
+                                            },
+                                            child: Text('ยกเลิก',
+                                                style: MyStyle().whiteStyle()),
+                                          )),
+                                      Container(
+                                          height: 50,
+                                          margin: EdgeInsets.only(
+                                              left: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.05,
+                                              right: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.05,
+                                              top: 30),
+                                          child: MaterialButton(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(5))),
+                                            color: Color(0xFF82DD55),
+                                            textColor: Colors.white,
+                                            onPressed: () {
+                                              Navigator.pushNamed(context, '');
+                                            },
+                                            child: Text('ยืนยัน',
+                                                style: MyStyle().whiteStyle()),
+                                          )),
+                                    ]),
+                                SizedBox(height: 20)
+                              ],
+                            )),
                       );
                     });
               },

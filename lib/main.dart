@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutterappleman/ui/detail/camera/camera.dart';
 import 'package:flutterappleman/ui/detail/camera/picture.dart';
 import 'package:flutterappleman/ui/detail/detailSchedule.dart';
-import 'package:flutterappleman/ui/detail/map/googleMap.dart';
+import 'package:flutterappleman/ui/detail/map/dropOffLocation.dart';
+import 'package:flutterappleman/ui/detail/map/pickUpLocation.dart';
 import 'package:flutterappleman/ui/evidence/evidenceCar.dart';
 import 'package:flutterappleman/ui/home/navigationBar.dart';
 import 'package:flutterappleman/ui/login/login.dart';
+import 'package:flutterappleman/ui/login/splashScreen.dart';
 import 'package:flutterappleman/ui/profile/editProfile.dart';
 import 'package:flutterappleman/ui/profile/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,11 +29,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(primarySwatch: Colors.red),
       initialRoute: '/',
       routes: <String, WidgetBuilder>{
-        '/': (context) => token == null ? Login() : NavigationBar(),
+        '/': (context) => token == null ? SplashScreen() : NavigationBar(),
         '/navigationBar': (context) => NavigationBar(),
         '/login': (context) => Login(),
+        '/splash': (context) => SplashScreen(),
         '/detail': (context) => DetailSchedule(),
-        '/map': (context) => MapsGoogle(),
+        '/pickUpLocation': (context) => PickUpLocation(), //สถานที่รับรถ
+        '/dropOffLocation': (context) => DropOffLocation(), //สถานที่ส่งรถ
         '/camera': (context) => Camera(),
         '/picture': (context) => Picture(),
         '/evidence-car': (context) => EvidenceCar(),

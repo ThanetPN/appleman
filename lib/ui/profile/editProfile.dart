@@ -61,9 +61,9 @@ class _EditProfileState extends State<EditProfile> {
       await _saveProfile(profile);
 
       //ไปหน้า calendar
-      //Navigator.pushNamed(context, '/navigationBar');
-      // Navigator.pushNamedAndRemoveUntil(
-      //     context, '/profile', (Route<dynamic> route) => false);
+      Navigator.pushNamed(context, '/navigationBar');
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/profile', (Route<dynamic> route) => false);
     } else {
       setState(() {
         isLoading = false;
@@ -234,45 +234,42 @@ class _EditProfileState extends State<EditProfile> {
           child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          floatingActionButton(),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+            Container(
+                height: 50,
+                margin: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width * 0.05,
+                    right: MediaQuery.of(context).size.width * 0.05,
+                    top: 30),
+                child: MaterialButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(5))),
+                  color: Color(0xFFD8D8D8),
+                  textColor: Colors.white,
+                  onPressed: () {
+                    Navigator.pushNamed(context, '');
+                  },
+                  child: Text('ยกเลิก', style: MyStyle().whiteStyle()),
+                )),
+            Container(
+                height: 50,
+                margin: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width * 0.05,
+                    right: MediaQuery.of(context).size.width * 0.05,
+                    top: 30),
+                child: MaterialButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(5))),
+                  color: Color(0xFF82DD55),
+                  textColor: Colors.white,
+                  onPressed: () {
+                    Navigator.pushNamed(context, '');
+                  },
+                  child: Text('ยืนยัน', style: MyStyle().whiteStyle()),
+                )),
+          ]),
         ],
       )),
-    );
-  }
-
-  Widget floatingActionButton() {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(40, 5, 40, 5),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          MaterialButton(
-            minWidth: 150,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(5))),
-            color: MyStyle().buttongray,
-            textColor: Colors.white,
-            onPressed: () {
-              Navigator.pushNamed(context, '/');
-            },
-            child: Text('ยกเลิก', style: MyStyle().whiteStyle()),
-          ),
-          SizedBox(width: 30),
-          MaterialButton(
-            minWidth: 150,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(5))),
-            color: MyStyle().buttongreen,
-            textColor: Colors.white,
-            onPressed: () {
-              if (_fbKey.currentState!.saveAndValidate()) {
-                _updateProfile(_fbKey.currentState!.value);
-              }
-            },
-            child: Text('ยืนยัน', style: MyStyle().whiteStyle()),
-          )
-        ],
-      ),
     );
   }
 }

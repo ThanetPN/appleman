@@ -3,10 +3,10 @@
 
     <!-- Required to fetch data from the internet. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
    <application
-        android:label="flutterappleman"
+        android:label="Apple Man"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
