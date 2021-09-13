@@ -208,12 +208,16 @@ class _HomeState extends State<Home> {
                                         child: new InkWell(
                                           onTap: () {
                                             Navigator.pushNamed(
-                                                context, '/detail', arguments: {
-                                              'RequestID':
-                                                  homeCard[index].requestId,
-                                              'EventCalendar':
-                                                  d.format(_focusedDay)
-                                            });
+                                                context, '/detail',
+                                                arguments: {
+                                                  'RequestID':
+                                                      homeCard[index].requestId,
+                                                  'EventCalendar':
+                                                      d.format(_focusedDay),
+                                                  'RequestStatus':
+                                                      homeCard[index]
+                                                          .requestStatus
+                                                });
                                           },
                                           child: Column(
                                             children: <Widget>[
@@ -327,28 +331,89 @@ class _HomeState extends State<Home> {
                                                             ],
                                                           ),
                                                           Row(
-                                                              children: <
-                                                                  Widget>[
-                                                                MaterialButton(
-                                                                  shape: RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius.all(
-                                                                              Radius.circular(5))),
-                                                                  color: MyStyle()
-                                                                      .buttongreen,
-                                                                  textColor:
-                                                                      Colors
-                                                                          .white,
-                                                                  onPressed:
-                                                                      () {},
-                                                                  child: Text(
-                                                                      homeCard[
-                                                                              index]
-                                                                          .requestStatus,
-                                                                      style: MyStyle()
-                                                                          .whiteStyle()),
-                                                                )
-                                                              ])
+                                                            children: [
+                                                              Container(
+                                                                child: homeCard[index]
+                                                                            .requestStatus ==
+                                                                        'Draft'
+                                                                    ? MaterialButton(
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.all(Radius.circular(5))),
+                                                                        color: MyStyle()
+                                                                            .garyssColor,
+                                                                        child: Text(
+                                                                            homeCard[index]
+                                                                                .requestStatus,
+                                                                            style:
+                                                                                MyStyle().whiteStyle()),
+                                                                        onPressed:
+                                                                            () {},
+                                                                      )
+                                                                    : errorA(),
+                                                              ),
+                                                              Container(
+                                                                child: homeCard[index]
+                                                                            .requestStatus ==
+                                                                        'Pending'
+                                                                    ? MaterialButton(
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.all(Radius.circular(5))),
+                                                                        color: MyStyle()
+                                                                            .yellowColor,
+                                                                        child: Text(
+                                                                            homeCard[index]
+                                                                                .requestStatus,
+                                                                            style:
+                                                                                MyStyle().whiteStyle()),
+                                                                        onPressed:
+                                                                            () {},
+                                                                      )
+                                                                    : errorA(),
+                                                              ),
+                                                              Container(
+                                                                child: homeCard[index]
+                                                                            .requestStatus ==
+                                                                        'waiting'
+                                                                    ? MaterialButton(
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.all(Radius.circular(5))),
+                                                                        color: MyStyle()
+                                                                            .yellowColor,
+                                                                        child: Text(
+                                                                            homeCard[index]
+                                                                                .requestStatus,
+                                                                            style:
+                                                                                MyStyle().whiteStyle()),
+                                                                        onPressed:
+                                                                            () {},
+                                                                      )
+                                                                    : errorA(),
+                                                              ),
+                                                              Container(
+                                                                child: homeCard[index]
+                                                                            .requestStatus ==
+                                                                        'Finish'
+                                                                    ? MaterialButton(
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.all(Radius.circular(5))),
+                                                                        color: MyStyle()
+                                                                            .greenColor,
+                                                                        child: Text(
+                                                                            homeCard[index]
+                                                                                .requestStatus,
+                                                                            style:
+                                                                                MyStyle().whiteStyle()),
+                                                                        onPressed:
+                                                                            () {},
+                                                                      )
+                                                                    : errorA(),
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ],
                                                       ),
                                                       Row(
@@ -416,5 +481,9 @@ class _HomeState extends State<Home> {
       centerTitle: true,
       title: Text('CALENDAR', style: MyStyle().whiteTitleStyle()),
     );
+  }
+
+  Widget errorA() {
+    return Container(child: Text(''));
   }
 }

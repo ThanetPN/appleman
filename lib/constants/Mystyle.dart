@@ -8,6 +8,7 @@ class MyStyle {
   Color blueSkyColor = Color(0xFF4A90E2);
   Color yellowColor = Color(0xFFFFBF67);
   Color greenColor = Color(0xFF82DD55);
+  Color garyssColor = Color(0xFF707070);
   Color whiteColor = Color(0xFFD8D8D8);
 
   //color button

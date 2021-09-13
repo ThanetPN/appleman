@@ -203,15 +203,11 @@ class _DetailScheduleState extends State<DetailSchedule> {
 
     late String _fromLongitude = ("${eventCalendarDate['EventCalendar']}");
     late String _requestID = ("${eventCalendarDate['RequestID']}");
+    late String _requestStatus = ("${eventCalendarDate['RequestStatus']}");
     EventCalendar = _fromLongitude;
     _RequestID = _requestID;
     _getCalendarByDay();
-    //print(_RequestID);
-
-    // //validator
-    // final descriptionValidator = MultiValidator([
-    //   RequiredValidator(errorText: 'Enter your Description'),
-    // ]);
+    //print(_requestStatus);
 
     return new Scaffold(
       appBar: AppBar(
@@ -252,14 +248,89 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                   children: [
                                     Text('รายละเอียดงาน',
                                         style: MyStyle().blueHeaderStyle()),
-                                    MaterialButton(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(5))),
-                                      color: MyStyle().greenColor,
-                                      child: Text(homeCard[index].requestStatus,
-                                          style: MyStyle().whiteStyle()),
-                                      onPressed: () {},
+                                    Row(
+                                      children: [
+                                        Container(
+                                          child: homeCard[index]
+                                                      .requestStatus ==
+                                                  'Draft'
+                                              ? MaterialButton(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  5))),
+                                                  color: MyStyle().garyssColor,
+                                                  child: Text(
+                                                      homeCard[index]
+                                                          .requestStatus,
+                                                      style: MyStyle()
+                                                          .whiteStyle()),
+                                                  onPressed: () {},
+                                                )
+                                              : errorA(),
+                                        ),
+                                        Container(
+                                          child: homeCard[index]
+                                                      .requestStatus ==
+                                                  'Pending'
+                                              ? MaterialButton(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  5))),
+                                                  color: MyStyle().yellowColor,
+                                                  child: Text(
+                                                      homeCard[index]
+                                                          .requestStatus,
+                                                      style: MyStyle()
+                                                          .whiteStyle()),
+                                                  onPressed: () {},
+                                                )
+                                              : errorA(),
+                                        ),
+                                        Container(
+                                          child: homeCard[index]
+                                                      .requestStatus ==
+                                                  'waiting'
+                                              ? MaterialButton(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  5))),
+                                                  color: MyStyle().yellowColor,
+                                                  child: Text(
+                                                      homeCard[index]
+                                                          .requestStatus,
+                                                      style: MyStyle()
+                                                          .whiteStyle()),
+                                                  onPressed: () {},
+                                                )
+                                              : errorA(),
+                                        ),
+                                        Container(
+                                          child: homeCard[index]
+                                                      .requestStatus ==
+                                                  'Finish'
+                                              ? MaterialButton(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  5))),
+                                                  color: MyStyle().greenColor,
+                                                  child: Text(
+                                                      homeCard[index]
+                                                          .requestStatus,
+                                                      style: MyStyle()
+                                                          .whiteStyle()),
+                                                  onPressed: () {},
+                                                )
+                                              : errorA(),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -538,59 +609,96 @@ class _DetailScheduleState extends State<DetailSchedule> {
                             ],
                           ))),
 
+                  //Add Teams
+                  Container(
+                    child: homeCard[index].requestStatus == 'Pending'
+                        ? cardAA()
+                        : errorA(),
+                  ),
+
                   //card requestItem
-                  // Container(
-                  //     margin: EdgeInsets.only(
-                  //         left: MediaQuery.of(context).size.width * 0.05,
-                  //         right: MediaQuery.of(context).size.width * 0.05,
-                  //         top: 20),
-                  //     child: Card(
-                  //         shape: RoundedRectangleBorder(
-                  //             borderRadius: BorderRadius.circular(10)),
-                  //         child: Column(
-                  //           children: [
-                  //             Container(
-                  //               margin: EdgeInsets.only(
-                  //                 left:
-                  //                     MediaQuery.of(context).size.width * 0.05,
-                  //                 right:
-                  //                     MediaQuery.of(context).size.width * 0.05,
-                  //               ),
-                  //               child: Row(
-                  //                 children: [
-                  //                   Image.asset(
-                  //                     'assets/images/car.jpg',
-                  //                     height: 150,
-                  //                     width: 150,
-                  //                   ),
-                  //                   SizedBox(width: 30),
-                  //                   Column(
-                  //                       crossAxisAlignment:
-                  //                           CrossAxisAlignment.start,
-                  //                       children: [
-                  //                         Text(itemCard[index].brandNameTha),
-                  //                         Text(itemCard[index].brandNameEng),
-                  //                         Text(itemCard[index].modelName),
-                  //                         Text(itemCard[index].color),
-                  //                         Text(itemCard[index].licensePlateNo),
-                  //                       ]),
-                  //                 ],
-                  //               ),
-                  //             )
-                  //           ],
-                  //         ))),
+                  Container(
+                      margin: EdgeInsets.only(
+                          left: MediaQuery.of(context).size.width * 0.05,
+                          right: MediaQuery.of(context).size.width * 0.05,
+                          top: 10),
+                      child: Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(
+                                  left:
+                                      MediaQuery.of(context).size.width * 0.05,
+                                  right:
+                                      MediaQuery.of(context).size.width * 0.05,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/car.jpg',
+                                      height: 150,
+                                      width: 150,
+                                    ),
+                                    SizedBox(width: 30),
+                                    Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(itemCard[index].brandNameTha),
+                                          Text(itemCard[index].brandNameEng),
+                                          Text(itemCard[index].modelName),
+                                          Text(itemCard[index].color),
+                                          Text(itemCard[index].licensePlateNo),
+                                        ]),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ))),
+
+                  //icon เพิ่มรายการรับรถ
 
                   //ไม่รับงาน
                   Container(
-                    margin: EdgeInsets.only(
-                        left: MediaQuery.of(context).size.width * 0.05,
-                        right: MediaQuery.of(context).size.width * 0.05),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [buttonDeny(), buttonConfirm()]),
-                  )
+                    child: homeCard[index].requestStatus == 'Draft'
+                        ? Container(
+                            margin: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width * 0.05,
+                                right:
+                                    MediaQuery.of(context).size.width * 0.05),
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [buttonDeny(), buttonConfirm()]),
+                          )
+                        : errorA(),
+                  ),
+
+                  //ยกเลิกงาน
+                  Container(
+                    child: homeCard[index].requestStatus == 'Pending'
+                        ? Container(
+                            margin: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width * 0.05,
+                                right:
+                                    MediaQuery.of(context).size.width * 0.05),
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [buttonCancel(), buttonConfirmCar()]),
+                          )
+                        : errorA(),
+                  ),
                 ]);
               }),
+
+      //iconcar
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: Container(
+        child: _requestStatus == 'Pending' ? buildButton() : errorA(),
+      ),
     );
   }
 
@@ -758,10 +866,725 @@ class _DetailScheduleState extends State<DetailSchedule> {
             top: 20,
             bottom: 20),
         child: MaterialButton(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(5))),
-            color: MyStyle().buttonblue, // background
-            child: Text('ยืนยันรับงาน', style: MyStyle().whiteStyle()),
-            onPressed: () => _workConfirm()));
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(5))),
+          color: MyStyle().buttonblue, // background
+          child: Text('ยืนยันรับงาน', style: MyStyle().whiteStyle()),
+          onPressed: () => _workConfirm(),
+        ));
   }
+
+  Widget cardAA() {
+    return Container(
+        margin: EdgeInsets.only(
+            left: MediaQuery.of(context).size.width * 0.05,
+            right: MediaQuery.of(context).size.width * 0.05),
+        child: Card(
+          child: Container(
+              margin: EdgeInsets.only(
+                  left: MediaQuery.of(context).size.width * 0.05,
+                  right: MediaQuery.of(context).size.width * 0.05),
+              child: Column(
+                children: [
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('ทีมงาน', style: MyStyle().blueStyle()),
+                        IconButton(
+                            icon: Icon(
+                              Icons.add_circle,
+                            ),
+                            iconSize: 30,
+                            color: MyStyle().buttongreen,
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Dialog(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      child: Container(
+                                          height: 500,
+                                          child: ListView(
+                                            children: [
+                                              Container(
+                                                  margin: EdgeInsets.only(
+                                                      left:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.05,
+                                                      right:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.05,
+                                                      top: 30),
+                                                  child: Column(
+                                                    children: [
+                                                      Text('เพิ่มคนในทีม',
+                                                          style: MyStyle()
+                                                              .blueStyle()),
+                                                      SizedBox(height: 20),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          CircleAvatar(
+                                                            backgroundImage:
+                                                                AssetImage(
+                                                                    'assets/images/profile.jpg'),
+                                                            radius: 20,
+                                                          ),
+                                                          Text('นายสมศรี มีชัย',
+                                                              style: MyStyle()
+                                                                  .garyStyle()),
+                                                          Row(
+                                                            children: [
+                                                              Text('พนักงาน',
+                                                                  style: MyStyle()
+                                                                      .garyStyle())
+                                                            ],
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  )),
+                                              SizedBox(height: 30),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                children: [
+                                                  MaterialButton(
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    5))),
+                                                    color: MyStyle().buttongray,
+                                                    child: Text('ยกเลิก',
+                                                        style: MyStyle()
+                                                            .whiteStyle()),
+                                                    onPressed: () {},
+                                                  ),
+                                                  MaterialButton(
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    5))),
+                                                    color:
+                                                        MyStyle().buttongreen,
+                                                    child: Text('เพิ่ม',
+                                                        style: MyStyle()
+                                                            .whiteStyle()),
+                                                    onPressed: () {},
+                                                  )
+                                                ],
+                                              )
+                                            ],
+                                          )),
+                                    );
+                                  });
+                            }),
+                      ]),
+                  Divider(color: Colors.black, thickness: 1),
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('นายยึดมั่น รักษาเกียรติ',
+                            style: MyStyle().garyStyle()),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('นายสมชาย ใจดี', style: MyStyle().garyStyle()),
+                            Icon(
+                              Icons.delete,
+                              color: MyStyle().redyColor,
+                              size: 30,
+                            ),
+                          ],
+                        ),
+                      ]),
+                ],
+              )),
+        ));
+  }
+
+  Widget errorA() {
+    return Container(child: Text(''));
+  }
+
+  //button ปัฎิเสธ
+  Widget buttonCancel() {
+    final descriptionValidator = MultiValidator([
+      RequiredValidator(errorText: 'Enter your Description'),
+    ]);
+    return Container(
+        height: 50,
+        margin: EdgeInsets.only(
+            left: MediaQuery.of(context).size.width * 0.05,
+            right: MediaQuery.of(context).size.width * 0.05,
+            top: 20,
+            bottom: 20),
+        child: MaterialButton(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(5))),
+          color: MyStyle().redyColor,
+          textColor: Colors.white,
+          child: Text('ยกเลิกงาน', style: MyStyle().whiteStyle()),
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return Dialog(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Container(
+                        height: 350,
+                        child: ListView(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(
+                                      left: MediaQuery.of(context).size.width *
+                                          0.05,
+                                      right: MediaQuery.of(context).size.width *
+                                          0.05,
+                                      top: 30),
+                                  child: Text('ยกเลิกงาน',
+                                      style: MyStyle().redStyle()),
+                                ),
+                              ],
+                            ),
+                            FormBuilder(
+                              key: _fbKey,
+                              initialValue: {'Description': ''},
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                    left: MediaQuery.of(context).size.width *
+                                        0.05,
+                                    right: MediaQuery.of(context).size.width *
+                                        0.05,
+                                    top: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text('เหตุผลยกเลิกงาน',
+                                        style: MyStyle().garyStyle()),
+                                    //Text input
+                                    Container(
+                                      margin: EdgeInsets.only(top: 16),
+                                      child: TextFormField(
+                                        controller: Description,
+                                        maxLines: 4,
+                                        keyboardType: TextInputType.text,
+                                        decoration: InputDecoration(
+                                          border: OutlineInputBorder(),
+                                          labelText: 'Description',
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: MyStyle().garyColor),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: MyStyle().garyColor),
+                                          ),
+                                          hintStyle: MyStyle().h3Style(),
+                                        ),
+                                        validator: descriptionValidator,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Container(
+                                      height: 50,
+                                      margin: EdgeInsets.only(
+                                          left: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.05,
+                                          right: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.05,
+                                          top: 30,
+                                          bottom: 30),
+                                      child: MaterialButton(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(5))),
+                                        color: Color(0xFFD8D8D8),
+                                        textColor: Colors.white,
+                                        onPressed: () {
+                                          Navigator.pop(context, '/detail');
+                                        },
+                                        child: Text('ยกเลิก',
+                                            style: MyStyle().whiteStyle()),
+                                      )),
+                                  Container(
+                                      height: 50,
+                                      margin: EdgeInsets.only(
+                                          left: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.05,
+                                          right: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.05,
+                                          top: 30,
+                                          bottom: 30),
+                                      child: MaterialButton(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(5))),
+                                        color: Color(0xFF82DD55),
+                                        textColor: Colors.white,
+                                        onPressed: () {
+                                          if (_fbKey.currentState!
+                                              .saveAndValidate()) {
+                                            _work();
+                                          }
+                                        },
+                                        child: Text('ยืนยัน',
+                                            style: MyStyle().whiteStyle()),
+                                      )),
+                                ]),
+                          ],
+                        )),
+                  );
+                });
+          },
+        ));
+  }
+
+  //button ยืนยันรับงาน
+  Widget buttonConfirmCar() {
+    return Container(
+        height: 50,
+        margin: EdgeInsets.only(
+            left: MediaQuery.of(context).size.width * 0.05,
+            right: MediaQuery.of(context).size.width * 0.05,
+            top: 20,
+            bottom: 20),
+        child: MaterialButton(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(5))),
+          color: MyStyle().buttonblue, // background
+          child: Text('ยืนยันรับรถ', style: MyStyle().whiteStyle()),
+          onPressed: () => {Navigator.pushNamed(context, '/evidence-car')},
+        ));
+  }
+
+  //icon car
+  Widget buildButton() => FloatingActionButton(
+        backgroundColor: Color(0xFF82DD55),
+        child: const Icon(
+          Icons.directions_car,
+          size: 30,
+        ),
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return Dialog(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Container(
+                      height: 500,
+                      child: ListView(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(top: 30),
+                          ),
+                          Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(
+                                    left: MediaQuery.of(context).size.width *
+                                        0.05,
+                                    right: MediaQuery.of(context).size.width *
+                                        0.05,
+                                    top: 10),
+                                child: Text(
+                                  'เพิ่มรายการรถ',
+                                  style: MyStyle().blueHeaderStyle(),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(
+                                    left: MediaQuery.of(context).size.width *
+                                        0.05,
+                                    right: MediaQuery.of(context).size.width *
+                                        0.05,
+                                    top: 10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text('รูปภาพประกอบ'),
+                                    Padding(
+                                      padding: EdgeInsets.all(5),
+                                      child: Card(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                          child: new InkWell(
+                                            onTap: () async {
+                                              Navigator.of(context,
+                                                      rootNavigator: true)
+                                                  .pushNamed('/camera');
+                                            },
+                                            child: Column(
+                                              children: <Widget>[
+                                                Padding(
+                                                    padding: const EdgeInsets
+                                                            .fromLTRB(
+                                                        50, 15, 50, 15),
+                                                    child: Column(
+                                                      children: [
+                                                        Icon(
+                                                          Icons.camera_alt,
+                                                          size: 80,
+                                                        )
+                                                      ],
+                                                    )),
+                                              ],
+                                            ),
+                                          )),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              FormBuilder(
+                                  child: Column(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            left: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                            right: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                            top: 10),
+                                        child: Text('ยี่ห้อ'),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            left: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                            right: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                            top: 10),
+                                        child: TextFormField(
+                                          //controller: password,
+                                          keyboardType:
+                                              TextInputType.visiblePassword,
+                                          obscureText: true,
+                                          decoration: InputDecoration(
+                                            border: OutlineInputBorder(),
+                                            labelText: 'Password',
+                                          ),
+                                          //validator: passwordValidator
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            left: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                            right: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                            top: 10),
+                                        child: Text('รุ่น'),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            left: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                            right: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                            top: 10),
+                                        child: TextFormField(
+                                          //controller: password,
+                                          keyboardType:
+                                              TextInputType.visiblePassword,
+                                          obscureText: true,
+                                          decoration: InputDecoration(
+                                            border: OutlineInputBorder(),
+                                            labelText: 'Password',
+                                          ),
+                                          //validator: passwordValidator
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            left: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                            right: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                            top: 10),
+                                        child: Text('สี'),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            left: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                            right: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                            top: 10),
+                                        child: TextFormField(
+                                          //controller: password,
+                                          keyboardType:
+                                              TextInputType.visiblePassword,
+                                          obscureText: true,
+                                          decoration: InputDecoration(
+                                            border: OutlineInputBorder(),
+                                            labelText: 'Password',
+                                          ),
+                                          //validator: passwordValidator
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            left: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                            right: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                            top: 10),
+                                        child: Text('ทะเบียน'),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            left: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                            right: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                            top: 10),
+                                        child: TextFormField(
+                                          //controller: password,
+                                          keyboardType:
+                                              TextInputType.visiblePassword,
+                                          obscureText: true,
+                                          decoration: InputDecoration(
+                                            border: OutlineInputBorder(),
+                                            labelText: 'Password',
+                                          ),
+                                          //validator: passwordValidator
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            left: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                            right: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                            top: 10),
+                                        child: Text('ปีผลิต'),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            left: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                            right: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                            top: 10),
+                                        child: TextFormField(
+                                          //controller: password,
+                                          keyboardType:
+                                              TextInputType.visiblePassword,
+                                          obscureText: true,
+                                          decoration: InputDecoration(
+                                            border: OutlineInputBorder(),
+                                            labelText: 'Password',
+                                          ),
+                                          //validator: passwordValidator
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              )),
+                              Container(
+                                margin: EdgeInsets.only(
+                                    left: MediaQuery.of(context).size.width *
+                                        0.05,
+                                    right: MediaQuery.of(context).size.width *
+                                        0.05,
+                                    top: 10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text('รูปเล่มทะเบียนรถ'),
+                                    Card(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        child: new InkWell(
+                                          onTap: () {},
+                                          child: Column(
+                                            children: <Widget>[
+                                              Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          50, 15, 50, 15),
+                                                  child: Column(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.camera_alt,
+                                                        size: 80,
+                                                      )
+                                                    ],
+                                                  )),
+                                            ],
+                                          ),
+                                        )),
+                                  ],
+                                ),
+                              ),
+                              Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Container(
+                                        height: 50,
+                                        margin: EdgeInsets.only(
+                                            left: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                            right: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                            top: 30),
+                                        child: MaterialButton(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(5))),
+                                          color: Color(0xFFD8D8D8),
+                                          textColor: Colors.white,
+                                          onPressed: () {
+                                            Navigator.pushNamed(context, '');
+                                          },
+                                          child: Text('ยกเลิก',
+                                              style: MyStyle().whiteStyle()),
+                                        )),
+                                    Container(
+                                        height: 50,
+                                        margin: EdgeInsets.only(
+                                            left: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                            right: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                            top: 30),
+                                        child: MaterialButton(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(5))),
+                                          color: Color(0xFF82DD55),
+                                          textColor: Colors.white,
+                                          onPressed: () {
+                                            Navigator.pushNamed(context, '');
+                                          },
+                                          child: Text('ยืนยัน',
+                                              style: MyStyle().whiteStyle()),
+                                        )),
+                                  ]),
+                              SizedBox(height: 20)
+                            ],
+                          ),
+                        ],
+                      ),
+                    ));
+              });
+        },
+      );
 }
