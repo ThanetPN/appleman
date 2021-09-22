@@ -1,11 +1,10 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:flutterappleman/constants/Mystyle.dart';
 import 'package:flutterappleman/widget/logo.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 
@@ -33,7 +32,7 @@ class _LoginState extends State<Login> {
   _login() async {
     final url = Uri.parse(
         'https://apps.softsquaregroup.com/AAA.AppleMan.Authen/api/Authentication');
-    //print(url);
+
     final http.Response response = await http.post(url,
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -44,7 +43,6 @@ class _LoginState extends State<Login> {
           "password": password.text,
         }));
     if (response.statusCode == 200) {
-      //print(response.body);
       //save token
       await prefs.setString('token', response.body);
 
@@ -55,19 +53,21 @@ class _LoginState extends State<Login> {
       Navigator.pushNamedAndRemoveUntil(
           context, '/navigationBar', (Route<dynamic> route) => false);
     } else {
-      var feedback = convert.jsonDecode(response.body);
-      Flushbar(
-        title: '${feedback['errorMessages']}',
-        message: 'เกิดข้อผิดพลาดจากระบบ ${feedback['isSuccess']}',
-        backgroundColor: MyStyle().redyColor,
-        icon: Icon(
-          Icons.error,
-          size: 28.0,
-          color: Colors.white,
-        ),
-        duration: Duration(seconds: 3),
-        leftBarIndicatorColor: Colors.redAccent,
-      )..show(context);
+      Alert(
+        context: context,
+        type: AlertType.error,
+        title: "Error Api",
+        desc: "เกิดข้อผิดพลาดจากระบบ",
+        buttons: [
+          DialogButton(
+            child: Text(
+              "Cancel",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            onPressed: () => Navigator.pop(context),
+          )
+        ],
+      ).show();
     }
   }
 
@@ -77,9 +77,7 @@ class _LoginState extends State<Login> {
     var token = convert.jsonDecode(tokenString!);
     String tokennn = "$token['data']";
     Map<String, dynamic> payload = Jwt.parseJwt(tokennn);
-    //print(payload);
     await prefs.setString('profile', convert.jsonEncode(payload));
-    //print(prefs.setString('profile', convert.jsonEncode(payload)));
   }
 
   final userCode = TextEditingController();

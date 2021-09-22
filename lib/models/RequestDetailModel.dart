@@ -19,7 +19,7 @@ class RequestDetailModel {
     this.errorFieldMessages,
   });
 
-  Data data;
+  Data? data;
   int totalCount;
   bool isSuccess;
   dynamic errorMessages;
@@ -27,17 +27,17 @@ class RequestDetailModel {
 
   factory RequestDetailModel.fromJson(Map<String, dynamic> json) =>
       RequestDetailModel(
-        data: Data.fromJson(json["data"]),
-        totalCount: json["totalCount"],
-        isSuccess: json["isSuccess"],
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+        totalCount: json["totalCount"] == null ? null : json["totalCount"],
+        isSuccess: json["isSuccess"] == null ? null : json["isSuccess"],
         errorMessages: json["errorMessages"],
         errorFieldMessages: json["errorFieldMessages"],
       );
 
   Map<String, dynamic> toJson() => {
-        "data": data.toJson(),
-        "totalCount": totalCount,
-        "isSuccess": isSuccess,
+        "data": data == null ? null : data!.toJson(),
+        "totalCount": totalCount == null ? null : totalCount,
+        "isSuccess": isSuccess == null ? null : isSuccess,
         "errorMessages": errorMessages,
         "errorFieldMessages": errorFieldMessages,
       };
@@ -51,29 +51,40 @@ class Data {
     required this.requestTeamMembers,
   });
 
-  RequestDetail requestDetail;
-  List<RequestItem> requestItems;
-  List<RequestImage> requestImages;
-  List<RequestTeamMember> requestTeamMembers;
+  RequestDetail? requestDetail;
+  List<RequestItem>? requestItems;
+  List<RequestImage>? requestImages;
+  List<RequestTeamMember>? requestTeamMembers;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        requestDetail: RequestDetail.fromJson(json["requestDetail"]),
-        requestItems: List<RequestItem>.from(
-            json["requestItems"].map((x) => RequestItem.fromJson(x))),
-        requestImages: List<RequestImage>.from(
-            json["requestImages"].map((x) => RequestImage.fromJson(x))),
-        requestTeamMembers: List<RequestTeamMember>.from(
-            json["requestTeamMembers"]
+        requestDetail: json["requestDetail"] == null
+            ? null
+            : RequestDetail.fromJson(json["requestDetail"]),
+        requestItems: json["requestItems"] == null
+            ? null
+            : List<RequestItem>.from(
+                json["requestItems"].map((x) => RequestItem.fromJson(x))),
+        requestImages: json["requestImages"] == null
+            ? null
+            : List<RequestImage>.from(
+                json["requestImages"].map((x) => RequestImage.fromJson(x))),
+        requestTeamMembers: json["requestTeamMembers"] == null
+            ? null
+            : List<RequestTeamMember>.from(json["requestTeamMembers"]
                 .map((x) => RequestTeamMember.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "requestDetail": requestDetail.toJson(),
-        "requestItems": List<dynamic>.from(requestItems.map((x) => x.toJson())),
-        "requestImages":
-            List<dynamic>.from(requestImages.map((x) => x.toJson())),
-        "requestTeamMembers":
-            List<dynamic>.from(requestTeamMembers.map((x) => x.toJson())),
+        "requestDetail": requestDetail == null ? null : requestDetail!.toJson(),
+        "requestItems": requestItems == null
+            ? null
+            : List<dynamic>.from(requestItems!.map((x) => x.toJson())),
+        "requestImages": requestImages == null
+            ? null
+            : List<dynamic>.from(requestImages!.map((x) => x.toJson())),
+        "requestTeamMembers": requestTeamMembers == null
+            ? null
+            : List<dynamic>.from(requestTeamMembers!.map((x) => x.toJson())),
       };
 }
 
@@ -111,8 +122,8 @@ class RequestDetail {
   String requestId;
   String sellerCode;
   String sellerName;
-  DateTime startEffectiveDate;
-  DateTime endEffectiveDate;
+  DateTime? startEffectiveDate;
+  DateTime? endEffectiveDate;
   String leaderCode;
   String requestType;
   String requestStatus;
@@ -137,63 +148,86 @@ class RequestDetail {
   int amount;
 
   factory RequestDetail.fromJson(Map<String, dynamic> json) => RequestDetail(
-        requestId: json["requestID"],
-        sellerCode: json["sellerCode"],
-        sellerName: json["sellerName"],
-        startEffectiveDate: DateTime.parse(json["startEffectiveDate"]),
-        endEffectiveDate: DateTime.parse(json["endEffectiveDate"]),
-        leaderCode: json["leaderCode"],
-        requestType: json["requestType"],
-        requestStatus: json["requestStatus"],
-        method: json["method"],
-        remark: json["remark"],
-        fromLatitude: json["fromLatitude"].toDouble(),
-        fromLongitude: json["fromLongitude"].toDouble(),
-        toLatitude: json["toLatitude"].toDouble(),
-        toLongitude: json["toLongitude"].toDouble(),
-        locationNameTha: json["locationNameTha"],
-        locationNameEng: json["locationNameEng"],
-        wareHouseCode: json["wareHouseCode"],
-        wareHouseNameTha: json["wareHouseNameTha"],
-        wareHouseNameEng: json["wareHouseNameEng"],
-        addressTha: json["addressTha"],
-        addressEng: json["addressEng"],
+        requestId: json["requestID"] == null ? null : json["requestID"],
+        sellerCode: json["sellerCode"] == null ? null : json["sellerCode"],
+        sellerName: json["sellerName"] == null ? null : json["sellerName"],
+        // startEffectiveDate: DateTime.parse(json["startEffectiveDate"]),
+        // endEffectiveDate: DateTime.parse(json["endEffectiveDate"]),
+        startEffectiveDate: json["startEffectiveDate"] == null
+            ? null
+            : DateTime.parse(json["startEffectiveDate"]),
+        endEffectiveDate: json["endEffectiveDate"] == null
+            ? null
+            : DateTime.parse(json["endEffectiveDate"]),
+
+        leaderCode: json["leaderCode"] == null ? null : json["leaderCode"],
+        requestType: json["requestType"] == null ? null : json["requestType"],
+        requestStatus:
+            json["requestStatus"] == null ? null : json["requestStatus"],
+        method: json["method"] == null ? null : json["method"],
+        remark: json["remark"] == null ? null : json["remark"],
+        fromLatitude: json["fromLatitude"] == null
+            ? null
+            : json["fromLatitude"].toDouble(),
+        fromLongitude: json["fromLongitude"] == null
+            ? null
+            : json["fromLongitude"].toDouble(),
+        toLatitude:
+            json["toLatitude"] == null ? null : json["toLatitude"].toDouble(),
+        toLongitude:
+            json["toLongitude"] == null ? null : json["toLongitude"].toDouble(),
+        locationNameTha:
+            json["locationNameTha"] == null ? null : json["locationNameTha"],
+        locationNameEng:
+            json["locationNameEng"] == null ? null : json["locationNameEng"],
+        wareHouseCode:
+            json["wareHouseCode"] == null ? null : json["wareHouseCode"],
+        wareHouseNameTha:
+            json["wareHouseNameTha"] == null ? null : json["wareHouseNameTha"],
+        wareHouseNameEng:
+            json["wareHouseNameEng"] == null ? null : json["wareHouseNameEng"],
+        addressTha: json["addressTha"] == null ? null : json["addressTha"],
+        addressEng: json["addressEng"] == null ? null : json["addressEng"],
         sellerReceiveSignature: json["sellerReceiveSignature"],
         driverReceiveSignature: json["driverReceiveSignature"],
         sellerDeliverySignature: json["sellerDeliverySignature"],
         driverDeliverySignature: json["driverDeliverySignature"],
-        active: json["active"],
-        amount: json["amount"],
+        active: json["active"] == null ? null : json["active"],
+        amount: json["amount"] == null ? null : json["amount"],
       );
 
   Map<String, dynamic> toJson() => {
-        "requestID": requestId,
-        "sellerCode": sellerCode,
-        "sellerName": sellerName,
-        "startEffectiveDate": startEffectiveDate.toIso8601String(),
-        "endEffectiveDate": endEffectiveDate.toIso8601String(),
-        "leaderCode": leaderCode,
-        "requestType": requestType,
-        "requestStatus": requestStatus,
-        "method": method,
-        "remark": remark,
-        "fromLatitude": fromLatitude,
-        "fromLongitude": fromLongitude,
-        "toLatitude": toLatitude,
-        "toLongitude": toLongitude,
-        "locationNameTha": locationNameTha,
-        "locationNameEng": locationNameEng,
-        "wareHouseCode": wareHouseCode,
-        "wareHouseNameTha": wareHouseNameTha,
-        "wareHouseNameEng": wareHouseNameEng,
-        "addressTha": addressTha,
-        "addressEng": addressEng,
+        "requestID": requestId == null ? null : requestId,
+        "sellerCode": sellerCode == null ? null : sellerCode,
+        "sellerName": sellerName == null ? null : sellerName,
+        "startEffectiveDate": startEffectiveDate == null
+            ? null
+            : startEffectiveDate!.toIso8601String(),
+        "endEffectiveDate": endEffectiveDate == null
+            ? null
+            : endEffectiveDate!.toIso8601String(),
+        "leaderCode": leaderCode == null ? null : leaderCode,
+        "requestType": requestType == null ? null : requestType,
+        "requestStatus": requestStatus == null ? null : requestStatus,
+        "method": method == null ? null : method,
+        "remark": remark == null ? null : remark,
+        "fromLatitude": fromLatitude == null ? null : fromLatitude,
+        "fromLongitude": fromLongitude == null ? null : fromLongitude,
+        "toLatitude": toLatitude == null ? null : toLatitude,
+        "toLongitude": toLongitude == null ? null : toLongitude,
+        "locationNameTha": locationNameTha == null ? null : locationNameTha,
+        "locationNameEng": locationNameEng == null ? null : locationNameEng,
+        "wareHouseCode": wareHouseCode == null ? null : wareHouseCode,
+        "wareHouseNameTha": wareHouseNameTha == null ? null : wareHouseNameTha,
+        "wareHouseNameEng": wareHouseNameEng == null ? null : wareHouseNameEng,
+        "addressTha": addressTha == null ? null : addressTha,
+        "addressEng": addressEng == null ? null : addressEng,
         "sellerReceiveSignature": sellerReceiveSignature,
         "driverReceiveSignature": driverReceiveSignature,
         "sellerDeliverySignature": sellerDeliverySignature,
         "driverDeliverySignature": driverDeliverySignature,
-        "active": active,
-        "amount": amount,
+        "active": active == null ? null : active,
+        "amount": amount == null ? null : amount,
       };
 }
 
@@ -205,7 +239,7 @@ class RequestImage {
     required this.companyCode,
     required this.fileName,
     required this.filePath,
-    this.itemCode,
+    required this.requestId,
   });
 
   String typeFlag;
@@ -214,26 +248,26 @@ class RequestImage {
   String companyCode;
   String fileName;
   String filePath;
-  dynamic itemCode;
+  String requestId;
 
   factory RequestImage.fromJson(Map<String, dynamic> json) => RequestImage(
-        typeFlag: json["typeFlag"],
-        imageSeq: json["imageSeq"],
-        imageType: json["imageType"],
-        companyCode: json["companyCode"],
-        fileName: json["fileName"],
-        filePath: json["filePath"],
-        itemCode: json["itemCode"],
+        typeFlag: json["typeFlag"] == null ? null : json["typeFlag"],
+        imageSeq: json["imageSeq"] == null ? null : json["imageSeq"],
+        imageType: json["imageType"] == null ? null : json["imageType"],
+        companyCode: json["companyCode"] == null ? null : json["companyCode"],
+        fileName: json["fileName"] == null ? null : json["fileName"],
+        filePath: json["filePath"] == null ? null : json["filePath"],
+        requestId: json["requestID"] == null ? null : json["requestID"],
       );
 
   Map<String, dynamic> toJson() => {
-        "typeFlag": typeFlag,
-        "imageSeq": imageSeq,
-        "imageType": imageType,
-        "companyCode": companyCode,
-        "fileName": fileName,
-        "filePath": filePath,
-        "itemCode": itemCode,
+        "typeFlag": typeFlag == null ? null : typeFlag,
+        "imageSeq": imageSeq == null ? null : imageSeq,
+        "imageType": imageType == null ? null : imageType,
+        "companyCode": companyCode == null ? null : companyCode,
+        "fileName": fileName == null ? null : fileName,
+        "filePath": filePath == null ? null : filePath,
+        "requestID": requestId == null ? null : requestId,
       };
 }
 
@@ -242,7 +276,7 @@ class RequestItem {
     required this.itemCode,
     required this.companyCode,
     required this.itemStatus,
-    this.sellerCode,
+    required this.sellerCode,
     required this.remark,
     required this.brandCode,
     required this.brandNameTha,
@@ -264,12 +298,13 @@ class RequestItem {
     required this.gearType,
     required this.manufactureYear,
     required this.receiveMiles,
+    required this.requestId,
   });
 
   String itemCode;
   String companyCode;
   String itemStatus;
-  dynamic sellerCode;
+  String sellerCode;
   String remark;
   String brandCode;
   String brandNameTha;
@@ -291,61 +326,74 @@ class RequestItem {
   String gearType;
   double manufactureYear;
   double receiveMiles;
+  String requestId;
 
   factory RequestItem.fromJson(Map<String, dynamic> json) => RequestItem(
-        itemCode: json["itemCode"],
-        companyCode: json["companyCode"],
-        itemStatus: json["itemStatus"],
-        sellerCode: json["sellerCode"],
-        remark: json["remark"],
-        brandCode: json["brandCode"],
-        brandNameTha: json["brandNameTha"],
-        brandNameEng: json["brandNameEng"],
-        modelCode: json["modelCode"],
-        modelName: json["modelName"],
-        subModelCode: json["subModelCode"],
-        subModelName: json["subModelName"],
-        custSubModelCode: json["custSubModelCode"],
-        licensePlateNo: json["licensePlateNo"],
-        provinceId: json["provinceID"],
-        provinceName: json["provinceName"],
-        districtId: json["districtID"],
-        districtName: json["districtName"],
-        colorCode: json["colorCode"],
-        color: json["color"],
-        gearCode: json["gearCode"],
-        gearName: json["gearName"],
-        gearType: json["gearType"],
-        manufactureYear: json["manufactureYear"],
-        receiveMiles: json["receiveMiles"],
+        itemCode: json["itemCode"] == null ? null : json["itemCode"],
+        companyCode: json["companyCode"] == null ? null : json["companyCode"],
+        itemStatus: json["itemStatus"] == null ? null : json["itemStatus"],
+        sellerCode: json["sellerCode"] == null ? null : json["sellerCode"],
+        remark: json["remark"] == null ? null : json["remark"],
+        brandCode: json["brandCode"] == null ? null : json["brandCode"],
+        brandNameTha:
+            json["brandNameTha"] == null ? null : json["brandNameTha"],
+        brandNameEng:
+            json["brandNameEng"] == null ? null : json["brandNameEng"],
+        modelCode: json["modelCode"] == null ? null : json["modelCode"],
+        modelName: json["modelName"] == null ? null : json["modelName"],
+        subModelCode:
+            json["subModelCode"] == null ? null : json["subModelCode"],
+        subModelName:
+            json["subModelName"] == null ? null : json["subModelName"],
+        custSubModelCode:
+            json["custSubModelCode"] == null ? null : json["custSubModelCode"],
+        licensePlateNo:
+            json["licensePlateNo"] == null ? null : json["licensePlateNo"],
+        provinceId: json["provinceID"] == null ? null : json["provinceID"],
+        provinceName:
+            json["provinceName"] == null ? null : json["provinceName"],
+        districtId: json["districtID"] == null ? null : json["districtID"],
+        districtName:
+            json["districtName"] == null ? null : json["districtName"],
+        colorCode: json["colorCode"] == null ? null : json["colorCode"],
+        color: json["color"] == null ? null : json["color"],
+        gearCode: json["gearCode"] == null ? null : json["gearCode"],
+        gearName: json["gearName"] == null ? null : json["gearName"],
+        gearType: json["gearType"] == null ? null : json["gearType"],
+        manufactureYear:
+            json["manufactureYear"] == null ? null : json["manufactureYear"],
+        receiveMiles:
+            json["receiveMiles"] == null ? null : json["receiveMiles"],
+        requestId: json["requestID"] == null ? null : json["requestID"],
       );
 
   Map<String, dynamic> toJson() => {
-        "itemCode": itemCode,
-        "companyCode": companyCode,
-        "itemStatus": itemStatus,
-        "sellerCode": sellerCode,
-        "remark": remark,
-        "brandCode": brandCode,
-        "brandNameTha": brandNameTha,
-        "brandNameEng": brandNameEng,
-        "modelCode": modelCode,
-        "modelName": modelName,
-        "subModelCode": subModelCode,
-        "subModelName": subModelName,
-        "custSubModelCode": custSubModelCode,
-        "licensePlateNo": licensePlateNo,
-        "provinceID": provinceId,
-        "provinceName": provinceName,
-        "districtID": districtId,
-        "districtName": districtName,
-        "colorCode": colorCode,
-        "color": color,
-        "gearCode": gearCode,
-        "gearName": gearName,
-        "gearType": gearType,
-        "manufactureYear": manufactureYear,
-        "receiveMiles": receiveMiles,
+        "itemCode": itemCode == null ? null : itemCode,
+        "companyCode": companyCode == null ? null : companyCode,
+        "itemStatus": itemStatus == null ? null : itemStatus,
+        "sellerCode": sellerCode == null ? null : sellerCode,
+        "remark": remark == null ? null : remark,
+        "brandCode": brandCode == null ? null : brandCode,
+        "brandNameTha": brandNameTha == null ? null : brandNameTha,
+        "brandNameEng": brandNameEng == null ? null : brandNameEng,
+        "modelCode": modelCode == null ? null : modelCode,
+        "modelName": modelName == null ? null : modelName,
+        "subModelCode": subModelCode == null ? null : subModelCode,
+        "subModelName": subModelName == null ? null : subModelName,
+        "custSubModelCode": custSubModelCode == null ? null : custSubModelCode,
+        "licensePlateNo": licensePlateNo == null ? null : licensePlateNo,
+        "provinceID": provinceId == null ? null : provinceId,
+        "provinceName": provinceName == null ? null : provinceName,
+        "districtID": districtId == null ? null : districtId,
+        "districtName": districtName == null ? null : districtName,
+        "colorCode": colorCode == null ? null : colorCode,
+        "color": color == null ? null : color,
+        "gearCode": gearCode == null ? null : gearCode,
+        "gearName": gearName == null ? null : gearName,
+        "gearType": gearType == null ? null : gearType,
+        "manufactureYear": manufactureYear == null ? null : manufactureYear,
+        "receiveMiles": receiveMiles == null ? null : receiveMiles,
+        "requestID": requestId == null ? null : requestId,
       };
 }
 
@@ -362,14 +410,14 @@ class RequestTeamMember {
 
   factory RequestTeamMember.fromJson(Map<String, dynamic> json) =>
       RequestTeamMember(
-        requestId: json["requestID"],
-        driverCode: json["driverCode"],
-        active: json["active"],
+        requestId: json["requestID"] == null ? null : json["requestID"],
+        driverCode: json["driverCode"] == null ? null : json["driverCode"],
+        active: json["active"] == null ? null : json["active"],
       );
 
   Map<String, dynamic> toJson() => {
-        "requestID": requestId,
-        "driverCode": driverCode,
-        "active": active,
+        "requestID": requestId == null ? null : requestId,
+        "driverCode": driverCode == null ? null : driverCode,
+        "active": active == null ? null : active,
       };
 }

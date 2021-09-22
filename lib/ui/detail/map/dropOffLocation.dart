@@ -41,9 +41,11 @@ class _DropOffLocationState extends State<DropOffLocation> {
     ImageConfiguration configuration = ImageConfiguration();
     BitmapDescriptor bmpd = await BitmapDescriptor.fromAssetImage(
         configuration, 'assets/icons/location.png');
-    setState(() {
-      _markerIcon = bmpd;
-    });
+    setState(
+      () {
+        _markerIcon = bmpd;
+      },
+    );
   }
 
   @override
@@ -57,10 +59,15 @@ class _DropOffLocationState extends State<DropOffLocation> {
 
     return Scaffold(
       appBar: AppBar(
-          centerTitle: true,
-          title: Text('สถานที่ส่งรถ',
-              style: const TextStyle(
-                  fontWeight: FontWeight.bold, color: Colors.white))),
+        centerTitle: true,
+        title: Text(
+          'สถานที่ส่งรถ',
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+      ),
       backgroundColor: MyStyle().garyAllColor,
       body: GoogleMap(
         mapType: MapType.normal,
@@ -73,13 +80,14 @@ class _DropOffLocationState extends State<DropOffLocation> {
         },
         markers: {
           Marker(
-              icon: _markerIcon,
-              markerId: MarkerId("${google['requestId']}"),
-              position: LatLng(_toLatitude, _toLongitude),
-              infoWindow: InfoWindow(
-                  title: '${google['wareHouseNameTha']}',
-                  snippet: "${google['wareHouseNameEng']}"),
-              onTap: () => _openOnGoogleMapApp(_toLatitude, _toLongitude)),
+            icon: _markerIcon,
+            markerId: MarkerId("${google['requestId']}"),
+            position: LatLng(_toLatitude, _toLongitude),
+            infoWindow: InfoWindow(
+                title: '${google['wareHouseNameTha']}',
+                snippet: "${google['wareHouseNameEng']}"),
+            onTap: () => _openOnGoogleMapApp(_toLatitude, _toLongitude),
+          ),
         },
       ),
     );

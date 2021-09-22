@@ -1,5 +1,5 @@
+import 'package:camera_camera/camera_camera.dart';
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
 import 'package:flutterappleman/constants/Mystyle.dart';
 
 class Camera extends StatefulWidget {
@@ -10,33 +10,13 @@ class Camera extends StatefulWidget {
 }
 
 class _CameraState extends State<Camera> {
-  late CameraController _controller;
-  late List<CameraDescription> cameras;
-  late CameraDescription camera;
-  late Widget cameraPreview;
-
-  Future<void> initCamera() async {
-    cameras = await availableCameras();
-    camera = cameras.first;
-    _controller = CameraController(camera, ResolutionPreset.medium);
-    await _controller.initialize();
-
-    cameraPreview = Center(child: CameraPreview(_controller));
-
-    setState(() {
-      cameraPreview = cameraPreview;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    initCamera();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
   }
 
@@ -45,19 +25,36 @@ class _CameraState extends State<Camera> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('CAMERA', style: MyStyle().whiteTitleStyle()),
+        title: Text(
+          'CAMERA',
+          style: MyStyle().whiteTitleStyle(),
+        ),
       ),
-      body: Container(child: cameraPreview),
+      body: CameraCamera(
+        onFile: (file) => print(file),
+      ),
+
       backgroundColor: Colors.black,
 
       //button
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.radio_button_unchecked),
-        backgroundColor: MyStyle().buttonwhite,
+        backgroundColor: MyStyle().blueColor,
         onPressed: () {
-          Navigator.pushNamed(context, '/picture');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => CameraCamera(
+                onFile: (file) {
+                  //photos.add(file);
+                  //When take foto you should close camera
+                  Navigator.pop(context);
+                  setState(() {});
+                },
+              ),
+            ),
+          );
         },
+        child: Icon(Icons.camera_alt),
       ),
     );
   }

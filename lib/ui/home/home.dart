@@ -4,6 +4,7 @@ import 'package:flutterappleman/constants/Mystyle.dart';
 import 'package:flutterappleman/models/CardModel.dart';
 import 'package:flutterappleman/ui/home/setCalendar.dart';
 import 'package:intl/intl.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
@@ -17,36 +18,38 @@ class _HomeState extends State<Home> {
   List<InRequestHome> homeCard = [];
   bool isLoading = true;
   late String wareHouseNameTha;
-  var EventCalendar = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  var EventCalendar = DateFormat('yyyy-MM-dd').format(
+    DateTime.now(),
+  );
   final d = new DateFormat('yyyy-MM-dd');
 
   _getCalendarByDay() async {
-    final url = Uri.parse(
-        'https://apps.softsquaregroup.com/AAA.AppleMan.API/api/Requst/GetRequestByDay?calendarEventDay=' +
-            EventCalendar.toString());
-    //print(url);
-    final http.Response response = await http.get(url);
+    final http.Response response = await http.get(Uri.parse(
+        'https://apps.softsquaregroup.com/AAA.AppleMan.API/api/Requst/GetRequestByDay?calendarEventDay=${EventCalendar.toString()}'));
     if (response.statusCode == 200) {
-      final CardModel home =
-          CardModel.fromJson(convert.jsonDecode(response.body));
+      final CardModel home = CardModel.fromJson(
+        convert.jsonDecode(response.body),
+      );
       setState(() {
         homeCard = home.homeCard;
         isLoading = false;
       });
-      //print(response.body);
     } else {
-      Flushbar(
-        title: 'เกิดข้อผิดพลาด',
-        message: 'error from backend ${response.statusCode}',
-        backgroundColor: MyStyle().redyColor,
-        icon: Icon(
-          Icons.error,
-          size: 28.0,
-          color: Colors.white,
-        ),
-        duration: Duration(seconds: 3),
-        leftBarIndicatorColor: Colors.redAccent,
-      )..show(context);
+      Alert(
+        context: context,
+        type: AlertType.error,
+        title: "Error Api",
+        desc: "เกิดข้อผิดพลาดจากระบบ",
+        buttons: [
+          DialogButton(
+            child: Text(
+              "Cancel",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            onPressed: () => Navigator.pop(context),
+          )
+        ],
+      ).show();
     }
   }
 
@@ -65,7 +68,9 @@ class _HomeState extends State<Home> {
     _getCalendarByDay();
 
     selectedDay = _focusedDay;
-    _selectedEvents = ValueNotifier(getEventsForDay(selectedDay!));
+    _selectedEvents = ValueNotifier(
+      getEventsForDay(selectedDay!),
+    );
   }
 
   @override
@@ -170,9 +175,12 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                     Padding(
-                        padding: EdgeInsets.fromLTRB(50, 10, 0, 0),
-                        child: Text(z.format(_focusedDay),
-                            style: MyStyle().redStyle())),
+                      padding: EdgeInsets.fromLTRB(50, 10, 0, 0),
+                      child: Text(
+                        z.format(_focusedDay),
+                        style: MyStyle().redStyle(),
+                      ),
+                    ),
                     Expanded(
                       child: ValueListenableBuilder<List<Event>>(
                         valueListenable: _selectedEvents,
@@ -265,11 +273,11 @@ class _HomeState extends State<Home> {
                                                               SizedBox(
                                                                   width: 10),
                                                               Text(
-                                                                  homeCard[
-                                                                          index]
-                                                                      .wareHouseNameTha,
-                                                                  style: MyStyle()
-                                                                      .garyStyle())
+                                                                homeCard[index]
+                                                                    .wareHouseNameTha,
+                                                                style: MyStyle()
+                                                                    .garyStyle(),
+                                                              )
                                                             ],
                                                           ),
                                                           Row(
@@ -282,11 +290,11 @@ class _HomeState extends State<Home> {
                                                               SizedBox(
                                                                   width: 10),
                                                               Text(
-                                                                  homeCard[
-                                                                          index]
-                                                                      .locationNameTha,
-                                                                  style: MyStyle()
-                                                                      .garyStyle())
+                                                                homeCard[index]
+                                                                    .locationNameTha,
+                                                                style: MyStyle()
+                                                                    .garyStyle(),
+                                                              )
                                                             ],
                                                           )
                                                         ],
@@ -301,33 +309,36 @@ class _HomeState extends State<Home> {
                                                                 MainAxisAlignment
                                                                     .spaceBetween,
                                                             children: [
-                                                              Row(
-                                                                  children: <
-                                                                      Widget>[
-                                                                    Icon(
-                                                                      Icons
-                                                                          .watch_later,
-                                                                    ),
-                                                                    SizedBox(
-                                                                        width:
-                                                                            10),
-                                                                    Text(f.format(
-                                                                        homeCard[index]
-                                                                            .endEffectiveDate))
-                                                                  ]),
-                                                              SizedBox(
-                                                                  width: 15),
                                                               Row(children: <
                                                                   Widget>[
                                                                 Icon(
                                                                   Icons
-                                                                      .drive_eta,
+                                                                      .watch_later,
                                                                 ),
                                                                 SizedBox(
                                                                     width: 10),
                                                                 Text(
-                                                                    '${homeCard[index].amount.toString()} คัน')
+                                                                  f.format(homeCard[
+                                                                          index]
+                                                                      .endEffectiveDate),
+                                                                )
                                                               ]),
+                                                              SizedBox(
+                                                                  width: 15),
+                                                              Row(
+                                                                children: <
+                                                                    Widget>[
+                                                                  Icon(
+                                                                    Icons
+                                                                        .drive_eta,
+                                                                  ),
+                                                                  SizedBox(
+                                                                      width:
+                                                                          10),
+                                                                  Text(
+                                                                      '${homeCard[index].amount.toString()} คัน')
+                                                                ],
+                                                              ),
                                                             ],
                                                           ),
                                                           Row(
@@ -335,18 +346,24 @@ class _HomeState extends State<Home> {
                                                               Container(
                                                                 child: homeCard[index]
                                                                             .requestStatus ==
-                                                                        'Draft'
+                                                                        'รอการยืนยัน'
                                                                     ? MaterialButton(
-                                                                        shape: RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.all(Radius.circular(5))),
+                                                                        shape:
+                                                                            RoundedRectangleBorder(
+                                                                          borderRadius:
+                                                                              BorderRadius.all(
+                                                                            Radius.circular(5),
+                                                                          ),
+                                                                        ),
                                                                         color: MyStyle()
                                                                             .garyssColor,
-                                                                        child: Text(
-                                                                            homeCard[index]
-                                                                                .requestStatus,
-                                                                            style:
-                                                                                MyStyle().whiteStyle()),
+                                                                        child:
+                                                                            Text(
+                                                                          homeCard[index]
+                                                                              .requestStatus,
+                                                                          style:
+                                                                              MyStyle().whiteStyle(),
+                                                                        ),
                                                                         onPressed:
                                                                             () {},
                                                                       )
@@ -355,18 +372,24 @@ class _HomeState extends State<Home> {
                                                               Container(
                                                                 child: homeCard[index]
                                                                             .requestStatus ==
-                                                                        'Pending'
+                                                                        'รอดำเนินการ'
                                                                     ? MaterialButton(
-                                                                        shape: RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.all(Radius.circular(5))),
+                                                                        shape:
+                                                                            RoundedRectangleBorder(
+                                                                          borderRadius:
+                                                                              BorderRadius.all(
+                                                                            Radius.circular(5),
+                                                                          ),
+                                                                        ),
                                                                         color: MyStyle()
                                                                             .yellowColor,
-                                                                        child: Text(
-                                                                            homeCard[index]
-                                                                                .requestStatus,
-                                                                            style:
-                                                                                MyStyle().whiteStyle()),
+                                                                        child:
+                                                                            Text(
+                                                                          homeCard[index]
+                                                                              .requestStatus,
+                                                                          style:
+                                                                              MyStyle().whiteStyle(),
+                                                                        ),
                                                                         onPressed:
                                                                             () {},
                                                                       )
@@ -375,18 +398,24 @@ class _HomeState extends State<Home> {
                                                               Container(
                                                                 child: homeCard[index]
                                                                             .requestStatus ==
-                                                                        'waiting'
+                                                                        'รอนำส่งรถ'
                                                                     ? MaterialButton(
-                                                                        shape: RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.all(Radius.circular(5))),
+                                                                        shape:
+                                                                            RoundedRectangleBorder(
+                                                                          borderRadius:
+                                                                              BorderRadius.all(
+                                                                            Radius.circular(5),
+                                                                          ),
+                                                                        ),
                                                                         color: MyStyle()
                                                                             .yellowColor,
-                                                                        child: Text(
-                                                                            homeCard[index]
-                                                                                .requestStatus,
-                                                                            style:
-                                                                                MyStyle().whiteStyle()),
+                                                                        child:
+                                                                            Text(
+                                                                          homeCard[index]
+                                                                              .requestStatus,
+                                                                          style:
+                                                                              MyStyle().whiteStyle(),
+                                                                        ),
                                                                         onPressed:
                                                                             () {},
                                                                       )
@@ -395,18 +424,24 @@ class _HomeState extends State<Home> {
                                                               Container(
                                                                 child: homeCard[index]
                                                                             .requestStatus ==
-                                                                        'Finish'
+                                                                        'เสร็จสิ้น'
                                                                     ? MaterialButton(
-                                                                        shape: RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.all(Radius.circular(5))),
+                                                                        shape:
+                                                                            RoundedRectangleBorder(
+                                                                          borderRadius:
+                                                                              BorderRadius.all(
+                                                                            Radius.circular(5),
+                                                                          ),
+                                                                        ),
                                                                         color: MyStyle()
                                                                             .greenColor,
-                                                                        child: Text(
-                                                                            homeCard[index]
-                                                                                .requestStatus,
-                                                                            style:
-                                                                                MyStyle().whiteStyle()),
+                                                                        child:
+                                                                            Text(
+                                                                          homeCard[index]
+                                                                              .requestStatus,
+                                                                          style:
+                                                                              MyStyle().whiteStyle(),
+                                                                        ),
                                                                         onPressed:
                                                                             () {},
                                                                       )
@@ -479,11 +514,16 @@ class _HomeState extends State<Home> {
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
       centerTitle: true,
-      title: Text('CALENDAR', style: MyStyle().whiteTitleStyle()),
+      title: Text(
+        'CALENDAR',
+        style: MyStyle().whiteTitleStyle(),
+      ),
     );
   }
 
   Widget errorA() {
-    return Container(child: Text(''));
+    return Container(
+      child: Text(''),
+    );
   }
 }

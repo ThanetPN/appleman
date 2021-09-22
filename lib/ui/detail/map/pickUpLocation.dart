@@ -15,7 +15,7 @@ class PickUpLocation extends StatefulWidget {
 
 class _PickUpLocationState extends State<PickUpLocation> {
   Completer<GoogleMapController> _controller = Completer();
-  //late BitmapDescriptor _markerIcon;
+  late BitmapDescriptor _markerIcon;
 
   _openOnGoogleMapApp(double latitude, double longitude) async {
     String googleUrl =
@@ -38,18 +38,18 @@ class _PickUpLocationState extends State<PickUpLocation> {
     }
   }
 
-  // Future _createMarkerImageFromAsset(BuildContext context) async {
-  //   ImageConfiguration configuration = ImageConfiguration();
-  //   BitmapDescriptor bmpd = await BitmapDescriptor.fromAssetImage(
-  //       configuration, 'assets/icons/location.png');
-  //   setState(() {
-  //     _markerIcon = bmpd;
-  //   });
-  // }
+  Future _createMarkerImageFromAsset(BuildContext context) async {
+    ImageConfiguration configuration = ImageConfiguration();
+    BitmapDescriptor bmpd = await BitmapDescriptor.fromAssetImage(
+        configuration, 'assets/icons/location.png');
+    setState(() {
+      _markerIcon = bmpd;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    //_createMarkerImageFromAsset(context);
+    _createMarkerImageFromAsset(context);
 
     Map google = ModalRoute.of(context)!.settings.arguments as Map;
     late double _fromLatitude = double.parse("${google['fromLatitude']}");
@@ -57,10 +57,13 @@ class _PickUpLocationState extends State<PickUpLocation> {
 
     return Scaffold(
       appBar: AppBar(
-          centerTitle: true,
-          title: Text('สถานที่รับรถ',
-              style: const TextStyle(
-                  fontWeight: FontWeight.bold, color: Colors.white))),
+        centerTitle: true,
+        title: Text(
+          'สถานที่รับรถ',
+          style:
+              const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+      ),
       backgroundColor: MyStyle().garyAllColor,
       body: GoogleMap(
         mapType: MapType.normal,
@@ -73,13 +76,14 @@ class _PickUpLocationState extends State<PickUpLocation> {
         },
         markers: {
           Marker(
-              //icon: _markerIcon,
-              markerId: MarkerId("${google['requestId']}"),
-              position: LatLng(_fromLatitude, _fromLongitude),
-              infoWindow: InfoWindow(
-                  title: '${google['locationNameTha']}',
-                  snippet: "${google['locationNameEng']}"),
-              onTap: () => _openOnGoogleMapApp(_fromLatitude, _fromLongitude)),
+            icon: _markerIcon,
+            markerId: MarkerId("${google['requestId']}"),
+            position: LatLng(_fromLatitude, _fromLongitude),
+            infoWindow: InfoWindow(
+                title: '${google['locationNameTha']}',
+                snippet: "${google['locationNameEng']}"),
+            onTap: () => _openOnGoogleMapApp(_fromLatitude, _fromLongitude),
+          ),
         },
       ),
     );

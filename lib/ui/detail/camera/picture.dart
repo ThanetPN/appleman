@@ -16,7 +16,10 @@ class _PictureState extends State<Picture> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('PICTURE', style: MyStyle().whiteTitleStyle()),
+        title: Text(
+          'PICTURE',
+          style: MyStyle().whiteTitleStyle(),
+        ),
       ),
       // body: Container(
       //   child: Image.file(
@@ -29,10 +32,13 @@ class _PictureState extends State<Picture> {
       //   ),
       // ),
       body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [Text('picture')],
-      )),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('picture'),
+          ],
+        ),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.file_upload),
