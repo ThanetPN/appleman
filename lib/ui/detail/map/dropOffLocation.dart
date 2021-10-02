@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterappleman/constants/Mystyle.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DropOffLocation extends StatefulWidget {
@@ -14,7 +14,7 @@ class DropOffLocation extends StatefulWidget {
 
 class _DropOffLocationState extends State<DropOffLocation> {
   Completer<GoogleMapController> _controller = Completer();
-  late BitmapDescriptor _markerIcon;
+  //late BitmapDescriptor bmpd;
 
   _openOnGoogleMapApp(double latitude, double longitude) async {
     String googleUrl = 'https://www.google.com/maps/search/?api=1&query=' +
@@ -22,35 +22,38 @@ class _DropOffLocationState extends State<DropOffLocation> {
     if (await canLaunch(googleUrl)) {
       await launch(googleUrl);
     } else {
-      Flushbar(
-        title: 'Error Google Map',
-        message: 'Could not open the map.',
-        backgroundColor: MyStyle().redyColor,
-        icon: Icon(
-          Icons.error,
-          size: 28.0,
-          color: Colors.white,
-        ),
-        duration: Duration(seconds: 3),
-        leftBarIndicatorColor: Colors.redAccent,
-      )..show(context);
+      Alert(
+        context: context,
+        type: AlertType.error,
+        title: "Error Api",
+        desc: "เกิดข้อผิดพลาดจากระบบ",
+        buttons: [
+          DialogButton(
+            child: Text(
+              "Cancel",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            onPressed: () => Navigator.pop(context),
+          )
+        ],
+      ).show();
     }
   }
 
-  Future _createMarkerImageFromAsset(BuildContext context) async {
-    ImageConfiguration configuration = ImageConfiguration();
-    BitmapDescriptor bmpd = await BitmapDescriptor.fromAssetImage(
-        configuration, 'assets/icons/location.png');
-    setState(
-      () {
-        _markerIcon = bmpd;
-      },
-    );
-  }
+  // Future _createMarkerImageFromAsset(BuildContext context) async {
+  //   ImageConfiguration configuration = ImageConfiguration();
+  //   BitmapDescriptor bmpd = await BitmapDescriptor.fromAssetImage(
+  //       configuration, 'assets/icons/location.png');
+  //   // setState(
+  //   //   () {
+  //   //     _markerIcon = bmpd;
+  //   //   },
+  //   // );
+  // }
 
   @override
   Widget build(BuildContext context) {
-    _createMarkerImageFromAsset(context);
+    // _createMarkerImageFromAsset(context);
 
     Map google = ModalRoute.of(context)!.settings.arguments as Map;
 
@@ -80,7 +83,7 @@ class _DropOffLocationState extends State<DropOffLocation> {
         },
         markers: {
           Marker(
-            icon: _markerIcon,
+            //icon: bmpd,
             markerId: MarkerId("${google['requestId']}"),
             position: LatLng(_toLatitude, _toLongitude),
             infoWindow: InfoWindow(

@@ -16,8 +16,8 @@ class _SplashScreenState extends State<SplashScreen> {
       navigateRoute: Login(),
       duration: 3500,
       imageSize: 130,
-      imageSrc: 'assets/icons/logo.png',
-      text: "Apple Man",
+      imageSrc: 'assets/icons/logo.webp',
+      text: "ระบบรับ-ส่งรถ",
       textType: TextType.TyperAnimatedText,
       textStyle: TextStyle(
         fontSize: 30.0,

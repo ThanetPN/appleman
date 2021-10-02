@@ -80,15 +80,15 @@ class _LoginState extends State<Login> {
     await prefs.setString('profile', convert.jsonEncode(payload));
   }
 
-  final userCode = TextEditingController();
-  final password = TextEditingController();
+  var userCode = TextEditingController();
+  var password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final userNameValidator = MultiValidator([
+    var userNameValidator = MultiValidator([
       RequiredValidator(errorText: 'Enter your Usercode'),
     ]);
-    final passwordValidator = MultiValidator([
+    var passwordValidator = MultiValidator([
       RequiredValidator(errorText: 'Enter your Password '),
       MinLengthValidator(3,
           errorText: 'password must be at least 3 digits long'),
@@ -100,7 +100,6 @@ class _LoginState extends State<Login> {
         Logo(),
         FormBuilder(
             key: _fbKey,
-            initialValue: {'userCode': '', 'password': ''},
             child: Column(
               children: [
                 Container(

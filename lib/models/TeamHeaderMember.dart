@@ -7,19 +7,19 @@ import 'dart:convert';
 TeamHeaderMember teamHeaderMemberFromJson(String str) =>
     TeamHeaderMember.fromJson(json.decode(str));
 
-String teamHeaderMemberToJson(TeamHeaderMember headerTeam) =>
-    json.encode(headerTeam.toJson());
+String teamHeaderMemberToJson(TeamHeaderMember member) =>
+    json.encode(member.toJson());
 
 class TeamHeaderMember {
   TeamHeaderMember({
-    required this.headerTeam,
+    required this.member,
     required this.totalCount,
     required this.isSuccess,
     this.errorMessages,
     this.errorFieldMessages,
   });
 
-  List<TeamMember>? headerTeam;
+  List<TeamMember>? member;
   int totalCount;
   bool isSuccess;
   dynamic errorMessages;
@@ -27,7 +27,7 @@ class TeamHeaderMember {
 
   factory TeamHeaderMember.fromJson(Map<String, dynamic> json) =>
       TeamHeaderMember(
-        headerTeam: json["data"] == null
+        member: json["data"] == null
             ? null
             : List<TeamMember>.from(
                 json["data"].map((x) => TeamMember.fromJson(x))),
@@ -38,9 +38,9 @@ class TeamHeaderMember {
       );
 
   Map<String, dynamic> toJson() => {
-        "data": headerTeam == null
+        "data": member == null
             ? null
-            : List<dynamic>.from(headerTeam!.map((x) => x.toJson())),
+            : List<dynamic>.from(member!.map((x) => x.toJson())),
         "totalCount": totalCount == null ? null : totalCount,
         "isSuccess": isSuccess == null ? null : isSuccess,
         "errorMessages": errorMessages,

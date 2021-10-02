@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:flutter_radio_group/flutter_radio_group.dart';
 import 'package:flutterappleman/constants/Mystyle.dart';
 import 'package:flutterappleman/models/RequestDetailModel.dart';
 import 'package:flutterappleman/models/TeamHeaderMember.dart';
@@ -9,6 +8,15 @@ import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+
+class MyChoice {
+  String choices;
+  int index;
+  MyChoice({
+    required this.index,
+    required this.choices,
+  });
+}
 
 class DetailSchedule extends StatefulWidget {
   DetailSchedule({Key? key}) : super(key: key);
@@ -19,9 +27,9 @@ class DetailSchedule extends StatefulWidget {
 
 class _DetailScheduleState extends State<DetailSchedule> {
   late RequestDetail requestDetail = requestDetail;
-  List<RequestItem> requestItems = [];
+  List<RequestItem?> requestItems = [];
   List<RequestTeamMember> requestTeamMembers = [];
-  List<TeamMember> headerTeam = [];
+  List<TeamMember>? member = [];
   bool isLoading = true;
   late String wareHouseNameTha;
   //var EventCalendar;
@@ -30,7 +38,7 @@ class _DetailScheduleState extends State<DetailSchedule> {
 
   //getData
   _getDetail() async {
-    final url = Uri.parse(
+    var url = Uri.parse(
         'https://apps.softsquaregroup.com/AAA.AppleMan.API/api/Requst/GetRequestDetail?RequestID=${RequestID.toString()}');
     final http.Response response = await http.get(url);
     if (response.statusCode == 200) {
@@ -66,20 +74,19 @@ class _DetailScheduleState extends State<DetailSchedule> {
 
   //หัวหน้าทีม
   getHeaderTeam() async {
-    final url = Uri.parse(
+    var url = Uri.parse(
         'https://apps.softsquaregroup.com/AAA.AppleMan.API/api/RequestTeamMember/GetRequestTeamMember');
-    //print(url);
-    final http.Response response = await http.get(url);
-    if (response.statusCode == 200) {
-      final TeamHeaderMember team =
-          TeamHeaderMember.fromJson(convert.jsonDecode(response.body));
 
-      if (this.mounted) {
-        setState(() {
-          headerTeam = team.headerTeam!;
-          isLoading = false;
-        });
-      }
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      final TeamHeaderMember hearderMember = TeamHeaderMember.fromJson(
+        convert.jsonDecode(response.body),
+      );
+
+      setState(() {
+        member = hearderMember.member;
+        isLoading = false;
+      });
     } else {
       Alert(
         context: context,
@@ -196,14 +203,21 @@ class _DetailScheduleState extends State<DetailSchedule> {
         context: context,
         type: AlertType.success,
         title: "Succeed",
-        desc: "ลบข้อมูลสำเร็จ",
+        desc: "ลบรายการรับรถสำเร็จ",
         buttons: [
           DialogButton(
             child: Text(
               "Cancel",
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pushNamed(
+              context,
+              '/detail',
+              arguments: {
+                'RequestID': RequestID,
+                'RequestStatus': RrequestStatus
+              },
+            ),
           )
         ],
       ).show();
@@ -219,7 +233,14 @@ class _DetailScheduleState extends State<DetailSchedule> {
               "Cancel",
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pushNamed(
+              context,
+              '/detail',
+              arguments: {
+                'RequestID': RequestID,
+                'RequestStatus': RrequestStatus
+              },
+            ),
           )
         ],
       ).show();
@@ -243,14 +264,88 @@ class _DetailScheduleState extends State<DetailSchedule> {
         context: context,
         type: AlertType.success,
         title: "Succeed",
-        desc: "ลบข้อมูลสำเร็จ",
+        desc: "ลบสมาชิกสำเร็จ",
         buttons: [
           DialogButton(
             child: Text(
               "Cancel",
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pushNamed(
+              context,
+              '/detail',
+              arguments: {
+                'RequestID': RequestID,
+                'RequestStatus': RrequestStatus
+              },
+            ),
+          )
+        ],
+      ).show();
+    } else {
+      Alert(
+        context: context,
+        type: AlertType.error,
+        title: "Error Api",
+        desc: "เกิดข้อผิดพลาดจากระบบ",
+        buttons: [
+          DialogButton(
+            child: Text(
+              "Cancel",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            onPressed: () => Navigator.pushNamed(
+              context,
+              '/detail',
+              arguments: {
+                'RequestID': RequestID,
+                'RequestStatus': RrequestStatus
+              },
+            ),
+          )
+        ],
+      ).show();
+    }
+  }
+
+  //แก้ไขรายการรับรถ
+  _updateFormItemCard(String itemCode) async {
+    var url = Uri.parse(
+        'https://apps.softsquaregroup.com/AAA.AppleMan.API/api/RequestItem/UpdateRequestItem');
+
+    final http.Response response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      body: convert.jsonEncode(
+        {
+          'itemCode': itemCode,
+          'brandNameEng': brandNameEng.text,
+          'modelName': modelName.text,
+          'color': color.text,
+          'licensePlateNo': licensePlateNo.text,
+          'manufactureYear': manufactureYear.text,
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      Alert(
+        context: context,
+        type: AlertType.success,
+        title: "Succeed",
+        desc: "แก้ไขรายการรับรถสำเร็จ",
+        buttons: [
+          DialogButton(
+            child: Text(
+              "Cancel",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            onPressed: () => Navigator.pushNamed(
+              context,
+              '/detail',
+              arguments: {
+                'RequestID': RequestID,
+              },
+            ),
           )
         ],
       ).show();
@@ -273,30 +368,45 @@ class _DetailScheduleState extends State<DetailSchedule> {
     }
   }
 
-  //แก้ไขรายการรับรถ
-  _updateFormItemCard(Map<String, dynamic> values) async {
-    //print(values);
-    final http.Response response = await http.post(
-      Uri.parse(
-          'https://apps.softsquaregroup.com/AAA.AppleMan.API/api/RequestItem/UpdateRequestItem'),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+  //input การรับงานไม่รับงาน
+  final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
+  var Description = TextEditingController();
+
+  //เพิ่ม รายการรับรถ
+  final TextEditingController itemCode = TextEditingController();
+  final TextEditingController brandNameEng = TextEditingController();
+  final TextEditingController modelName = TextEditingController();
+  final TextEditingController color = TextEditingController();
+  final TextEditingController licensePlateNo = TextEditingController();
+  final TextEditingController manufactureYear = TextEditingController();
+
+  //insert รายการรับรถ
+  _requestItemWithUser() async {
+    var url = Uri.parse(
+        'https://apps.softsquaregroup.com/AAA.AppleMan.API/api/RequestItem/RequestItemWithUser');
+    var response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
       body: convert.jsonEncode(
         {
-          'itemCode': values['itemCode'],
-          'brandNameEng': values['brandNameEng'],
-          'modelName': values['modelName'],
-          'color': values['color'],
-          'licensePlateNo': values['licensePlateNo'],
-          'manufactureYear': values['manufactureYear'],
+          "requestID": RequestID,
+          'itemCode': itemCode.text,
+          'brandNameEng': brandNameEng.text,
+          'modelName': modelName.text,
+          'color': color.text,
+          'licensePlateNo': licensePlateNo.text,
+          'manufactureYear': manufactureYear.text,
         },
       ),
     );
-    if (response.statusCode == 200) {
+    if (response.statusCode == 500) {
       Alert(
         context: context,
         type: AlertType.success,
         title: "Succeed",
-        desc: "แก้ไขรายการรับรถสำเร็จ",
+        desc: "เพิ่มรายการรับรถสำเร็จ",
         buttons: [
           DialogButton(
             child: Text(
@@ -333,96 +443,16 @@ class _DetailScheduleState extends State<DetailSchedule> {
     }
   }
 
-  //input การรับงานไม่รับงาน
-  final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
-  final Description = TextEditingController();
-
-  //เพิ่ม รายการรับรถ
-  final itemCode = TextEditingController();
-  final brandNameEng = TextEditingController();
-  final modelName = TextEditingController();
-  final color = TextEditingController();
-  final licensePlateNo = TextEditingController();
-  final manufactureYear = TextEditingController();
-
-  //insert รายการรับรถ
-  _requestItemWithUser() async {
-    setState(() {
-      isLoading = true;
-    });
-    final url = Uri.parse(
-        'https://apps.softsquaregroup.com/AAA.AppleMan.API/api/RequestItem/RequestItemWithUser');
-    final http.Response response = await http.post(
-      url,
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: convert.jsonEncode(
-        {
-          'itemCode': itemCode.text,
-          "requestID": RequestID,
-          'brandNameEng': brandNameEng.text,
-          'modelName': modelName.text,
-          'color': color.text,
-          'licensePlateNo': licensePlateNo.text,
-          'manufactureYear': manufactureYear.text,
-        },
-      ),
-    );
-    if (response.statusCode == 200) {
-      print(response.body);
-      setState(() {
-        isLoading = false;
-      });
-      convert.jsonDecode(response.body);
-      Alert(
-        context: context,
-        type: AlertType.error,
-        title: "Succeed",
-        desc: "เพิ่มรายการรับรถสำเร็จ",
-        buttons: [
-          DialogButton(
-            child: Text(
-              "Cancel",
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-            onPressed: () => Navigator.pop(context),
-            width: 120,
-          )
-        ],
-      ).show();
-
-      //กลับไปหน้า detail
-      Navigator.pop(context, '/detail');
-    } else {
-      Alert(
-        context: context,
-        type: AlertType.error,
-        title: "Error Api",
-        desc: "เกิดข้อผิดพลาดจากระบบ",
-        buttons: [
-          DialogButton(
-            child: Text(
-              "Cancel",
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-            onPressed: () => Navigator.pop(context),
-          )
-        ],
-      ).show();
-    }
-  }
-
   @override
   void initState() {
     if (mounted) {
+      getHeaderTeam();
       super.initState();
     }
   }
 
   @override
   void dispose() {
-    getHeaderTeam();
     _getDetail();
     super.dispose();
   }
@@ -779,7 +809,7 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                             },
                                           );
                                         },
-                                        child: const Text('เปิด Google Map'),
+                                        child: Text('เปิด Google Map'),
                                       ),
                                     ],
                                   ),
@@ -984,44 +1014,55 @@ class _DetailScheduleState extends State<DetailSchedule> {
         right: MediaQuery.of(context).size.width * 0.05,
         top: 10,
       ),
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(
-                left: MediaQuery.of(context).size.width * 0.05,
-                right: MediaQuery.of(context).size.width * 0.05,
-              ),
-              child: Row(
-                children: [
-                  Image.asset(
-                    'assets/images/car.jpg',
-                    height: 150,
-                    width: 150,
-                  ),
-                  SizedBox(width: 30),
-                  Column(
-                    children: requestItems
-                        .map(
-                          (e) => Column(
+      child: Column(
+        children: requestItems
+            .map(
+              (RequestItem? e) => Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(
+                        left: MediaQuery.of(context).size.width * 0.05,
+                        right: MediaQuery.of(context).size.width * 0.05,
+                      ),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            'assets/images/car.jpg',
+                            height: 150,
+                            width: 150,
+                          ),
+                          SizedBox(width: 30),
+                          Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(e == null ? '-' : e.brandNameTha),
-                              Text(e == null ? '-' : e.brandNameEng),
-                              Text(e == null ? '-' : e.modelName),
-                              Text(e == null ? '-' : e.color),
-                              Text(e == null ? '-' : e.licensePlateNo),
+                              Text((e == null || e.brandNameTha == null)
+                                  ? '-'
+                                  : e.brandNameTha!),
+                              Text((e == null || e.brandNameEng == null)
+                                  ? '-'
+                                  : e.brandNameEng!),
+                              Text((e == null || e.modelName == null)
+                                  ? '-'
+                                  : e.modelName!),
+                              Text((e == null || e.color == null)
+                                  ? '-'
+                                  : e.color!),
+                              Text((e == null || e.licensePlateNo == null)
+                                  ? '-'
+                                  : e.licensePlateNo!),
                             ],
                           ),
-                        )
-                        .toList(),
-                  )
-                ],
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             )
-          ],
-        ),
+            .toList(),
       ),
     );
   }
@@ -1032,50 +1073,57 @@ class _DetailScheduleState extends State<DetailSchedule> {
       margin: EdgeInsets.only(
         left: MediaQuery.of(context).size.width * 0.05,
         right: MediaQuery.of(context).size.width * 0.05,
+        top: 10,
       ),
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(
-                left: MediaQuery.of(context).size.width * 0.05,
-                right: MediaQuery.of(context).size.width * 0.05,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/images/car.jpg',
-                        height: 150,
-                        width: 150,
+      child: Column(
+        children: requestItems
+            .map(
+              (RequestItem? e) => Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(
+                        left: MediaQuery.of(context).size.width * 0.05,
+                        right: MediaQuery.of(context).size.width * 0.05,
                       ),
-                      SizedBox(width: 20),
-                      Column(
-                          children: requestItems
-                              .map(
-                                (e) => Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(e == null ? '-' : e.brandNameTha),
-                                      Text(e == null ? '-' : e.brandNameEng),
-                                      Text(e == null ? '-' : e.modelName),
-                                      Text(e == null ? '-' : e.color),
-                                      Text(e == null ? '-' : e.licensePlateNo),
-                                    ]),
-                              )
-                              .toList())
-                    ],
-                  ),
-                  Icon(Icons.block, color: MyStyle().redyColor)
-                ],
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            'assets/images/car.jpg',
+                            height: 150,
+                            width: 150,
+                          ),
+                          SizedBox(width: 30),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text((e == null || e.brandNameTha == null)
+                                  ? '-'
+                                  : e.brandNameTha!),
+                              Text((e == null || e.brandNameEng == null)
+                                  ? '-'
+                                  : e.brandNameEng!),
+                              Text((e == null || e.modelName == null)
+                                  ? '-'
+                                  : e.modelName!),
+                              Text((e == null || e.color == null)
+                                  ? '-'
+                                  : e.color!),
+                              Text((e == null || e.licensePlateNo == null)
+                                  ? '-'
+                                  : e.licensePlateNo!),
+                            ],
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             )
-          ],
-        ),
+            .toList(),
       ),
     );
   }
@@ -1088,50 +1136,55 @@ class _DetailScheduleState extends State<DetailSchedule> {
         right: MediaQuery.of(context).size.width * 0.05,
         top: 10,
       ),
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(
-                left: MediaQuery.of(context).size.width * 0.05,
-                right: MediaQuery.of(context).size.width * 0.05,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/images/car.jpg',
-                        height: 150,
-                        width: 150,
+      child: Column(
+        children: requestItems
+            .map(
+              (RequestItem? e) => Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(
+                        left: MediaQuery.of(context).size.width * 0.05,
+                        right: MediaQuery.of(context).size.width * 0.05,
                       ),
-                      SizedBox(width: 20),
-                      Column(
-                        children: requestItems
-                            .map(
-                              (e) => Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(e == null ? '-' : e.brandNameTha),
-                                  Text(e == null ? '-' : e.brandNameEng),
-                                  Text(e == null ? '-' : e.modelName),
-                                  Text(e == null ? '-' : e.color),
-                                  Text(e == null ? '-' : e.licensePlateNo),
-                                ],
-                              ),
-                            )
-                            .toList(),
-                      )
-                    ],
-                  ),
-                  Icon(Icons.ac_unit, color: MyStyle().greenColor)
-                ],
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            'assets/images/car.jpg',
+                            height: 150,
+                            width: 150,
+                          ),
+                          SizedBox(width: 30),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text((e == null || e.brandNameTha == null)
+                                  ? '-'
+                                  : e.brandNameTha!),
+                              Text((e == null || e.brandNameEng == null)
+                                  ? '-'
+                                  : e.brandNameEng!),
+                              Text((e == null || e.modelName == null)
+                                  ? '-'
+                                  : e.modelName!),
+                              Text((e == null || e.color == null)
+                                  ? '-'
+                                  : e.color!),
+                              Text((e == null || e.licensePlateNo == null)
+                                  ? '-'
+                                  : e.licensePlateNo!),
+                            ],
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             )
-          ],
-        ),
+            .toList(),
       ),
     );
   }
@@ -1140,92 +1193,527 @@ class _DetailScheduleState extends State<DetailSchedule> {
   Widget insertAddCarCard() {
     return Container(
       margin: EdgeInsets.only(
-          left: MediaQuery.of(context).size.width * 0.05,
-          right: MediaQuery.of(context).size.width * 0.05,
-          top: 10),
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(
-                left: MediaQuery.of(context).size.width * 0.05,
-                right: MediaQuery.of(context).size.width * 0.05,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/images/car.jpg',
-                        height: 130,
-                        width: 130,
-                      ),
-                      SizedBox(width: 20),
-                      Column(
-                        children: requestItems
-                            .map(
-                              (e) => Column(
+        left: MediaQuery.of(context).size.width * 0.05,
+        right: MediaQuery.of(context).size.width * 0.05,
+        top: 10,
+      ),
+      child: Column(
+        children: requestItems
+            .map(
+              (RequestItem? e) => Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Row(
+                            children: [
+                              Image.asset(
+                                'assets/images/car.jpg',
+                                height: 150,
+                                width: 150,
+                              ),
+                              SizedBox(width: 20),
+                              Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(e == null ? '-' : e.brandNameTha),
-                                  Text(e == null ? '-' : e.brandNameEng),
-                                  Text(e == null ? '-' : e.modelName),
-                                  Text(e == null ? '-' : e.color),
-                                  Text(e == null ? '-' : e.licensePlateNo),
+                                  Text((e == null || e.brandNameTha == null)
+                                      ? '-'
+                                      : e.brandNameTha!),
+                                  Text((e == null || e.brandNameEng == null)
+                                      ? '-'
+                                      : e.brandNameEng!),
+                                  Text((e == null || e.modelName == null)
+                                      ? '-'
+                                      : e.modelName!),
+                                  Text((e == null || e.color == null)
+                                      ? '-'
+                                      : e.color!),
+                                  Text((e == null || e.licensePlateNo == null)
+                                      ? '-'
+                                      : e.licensePlateNo!),
                                 ],
                               ),
-                            )
-                            .toList(),
-                      )
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Column(
-                        children: requestItems
-                            .map(
-                              (e) => Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  IconButton(
-                                    icon: Icon(Icons.edit),
-                                    color: MyStyle().yellowColor,
-                                    onPressed: () {
-                                      updateFrom();
+                            ],
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Row(
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.edit),
+                                color: MyStyle().yellowColor,
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Dialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        child: Container(
+                                          height: 600,
+                                          child: ListView(
+                                            children: [
+                                              Container(
+                                                margin:
+                                                    EdgeInsets.only(top: 30),
+                                              ),
+                                              Column(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Text(
+                                                      'แก้ไขรายการรถ',
+                                                      style: MyStyle()
+                                                          .blueHeaderStyle(),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Text('รูปภาพประกอบ'),
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsets.all(5),
+                                                          child: Card(
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                            ),
+                                                            child: new InkWell(
+                                                              onTap: () async {
+                                                                Navigator.of(
+                                                                        context,
+                                                                        rootNavigator:
+                                                                            true)
+                                                                    .pushNamed(
+                                                                        '/camera');
+                                                              },
+                                                              child: Column(
+                                                                children: <
+                                                                    Widget>[
+                                                                  Padding(
+                                                                    padding:
+                                                                        const EdgeInsets.fromLTRB(
+                                                                            50,
+                                                                            15,
+                                                                            50,
+                                                                            15),
+                                                                    child:
+                                                                        Column(
+                                                                      children: [
+                                                                        Icon(
+                                                                          Icons
+                                                                              .camera_alt,
+                                                                          size:
+                                                                              80,
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  FormBuilder(
+                                                    key: _fbKey,
+                                                    child: Column(
+                                                      children: [
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: Text(
+                                                                  'ยี่ห้อ'),
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child:
+                                                                  TextFormField(
+                                                                controller:
+                                                                    brandNameEng,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                  border:
+                                                                      OutlineInputBorder(),
+                                                                  labelText:
+                                                                      'brandNameEng',
+                                                                ),
+                                                                validator:
+                                                                    brandNameEngValidator,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child:
+                                                                  Text('รุ่น'),
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child:
+                                                                  TextFormField(
+                                                                      controller:
+                                                                          modelName,
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      decoration:
+                                                                          InputDecoration(
+                                                                        border:
+                                                                            OutlineInputBorder(),
+                                                                        labelText:
+                                                                            'ModelName',
+                                                                      ),
+                                                                      validator:
+                                                                          modelNameValidator),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: Text('สี'),
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child:
+                                                                  TextFormField(
+                                                                controller:
+                                                                    color,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                  border:
+                                                                      OutlineInputBorder(),
+                                                                  labelText:
+                                                                      'Color',
+                                                                ),
+                                                                validator:
+                                                                    colorValidator,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: Text(
+                                                                  'ทะเบียนรถ'),
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child:
+                                                                  TextFormField(
+                                                                controller:
+                                                                    licensePlateNo,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                  border:
+                                                                      OutlineInputBorder(),
+                                                                  labelText:
+                                                                      'LicensePlateNo',
+                                                                ),
+                                                                validator:
+                                                                    licensePlateNoValidator,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: Text(
+                                                                  'ปีผลิต'),
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child:
+                                                                  TextFormField(
+                                                                controller:
+                                                                    manufactureYear,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .number,
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                  border:
+                                                                      OutlineInputBorder(),
+                                                                  labelText:
+                                                                      'ManufactureYear',
+                                                                ),
+                                                                validator:
+                                                                    manufactureYearValidator,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Text(
+                                                            'รูปเล่มทะเบียนรถ'),
+                                                        Card(
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                          ),
+                                                          child: new InkWell(
+                                                            onTap: () {
+                                                              Navigator.of(
+                                                                      context,
+                                                                      rootNavigator:
+                                                                          true)
+                                                                  .pushNamed(
+                                                                      '/camera');
+                                                            },
+                                                            child: Column(
+                                                              children: <
+                                                                  Widget>[
+                                                                Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                              .fromLTRB(
+                                                                          50,
+                                                                          15,
+                                                                          50,
+                                                                          15),
+                                                                  child: Column(
+                                                                    children: [
+                                                                      Icon(
+                                                                        Icons
+                                                                            .camera_alt,
+                                                                        size:
+                                                                            80,
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                      bottom: 20,
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceAround,
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: MaterialButton(
+                                                            height: 50,
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .all(
+                                                                Radius.circular(
+                                                                    5),
+                                                              ),
+                                                            ),
+                                                            color: Color(
+                                                                0xFFD8D8D8),
+                                                            textColor:
+                                                                Colors.white,
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context,
+                                                                  '/detail');
+                                                            },
+                                                            child: Text(
+                                                              'ยกเลิก',
+                                                              style: MyStyle()
+                                                                  .whiteStyle(),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: MaterialButton(
+                                                            height: 50,
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .all(
+                                                                Radius.circular(
+                                                                    5),
+                                                              ),
+                                                            ),
+                                                            color: Color(
+                                                                0xFF82DD55),
+                                                            textColor:
+                                                                Colors.white,
+                                                            onPressed: () {
+                                                              if (_fbKey
+                                                                  .currentState!
+                                                                  .saveAndValidate()) {
+                                                                _updateFormItemCard(
+                                                                  e!.itemCode,
+                                                                );
+                                                              }
+                                                            },
+                                                            child: Text(
+                                                              'ยืนยัน',
+                                                              style: MyStyle()
+                                                                  .whiteStyle(),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
                                     },
-                                  ),
-                                ],
+                                  );
+                                },
                               ),
-                            )
-                            .toList(),
-                      ),
-                      Column(
-                        children: requestItems
-                            .map(
-                              (e) => Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  IconButton(
-                                    icon: Icon(Icons.delete),
-                                    color: MyStyle().redyColor,
-                                    onPressed: () {
-                                      _deleteRequestItem(e.itemCode);
+                              IconButton(
+                                icon: Icon(Icons.delete),
+                                color: MyStyle().redyColor,
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    barrierDismissible:
+                                        false, // user must tap button!
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('Alert'),
+                                        content: SingleChildScrollView(
+                                          child: Column(
+                                            children: <Widget>[
+                                              Text(
+                                                  'คุณต้องการลบรายการรับรถนี้ไหม?'),
+                                            ],
+                                          ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: Text('Cancel'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                          TextButton(
+                                            child: Text('OK'),
+                                            onPressed: () {
+                                              _deleteRequestItem(e!.itemCode);
+                                            },
+                                          ),
+                                        ],
+                                      );
                                     },
-                                  ),
-                                ],
+                                  );
+                                },
                               ),
-                            )
-                            .toList(),
+                            ],
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
             )
-          ],
-        ),
+            .toList(),
       ),
     );
   }
@@ -1273,12 +1761,8 @@ class _DetailScheduleState extends State<DetailSchedule> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Container(
-                            margin: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width * 0.05,
-                              right: MediaQuery.of(context).size.width * 0.05,
-                              top: 30,
-                            ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
                             child: Text(
                               'ไม่รับงาน',
                               style: MyStyle().redStyle(),
@@ -1335,38 +1819,27 @@ class _DetailScheduleState extends State<DetailSchedule> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Container(
-                              height: 50,
-                              margin: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width * 0.05,
-                                right: MediaQuery.of(context).size.width * 0.05,
-                                top: 30,
-                                bottom: 30,
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: MaterialButton(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(5),
+                                ),
                               ),
-                              child: MaterialButton(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(5),
-                                  ),
-                                ),
-                                color: Color(0xFFD8D8D8),
-                                textColor: Colors.white,
-                                onPressed: () {
-                                  Navigator.pop(context, '/detail');
-                                },
-                                child: Text(
-                                  'ยกเลิก',
-                                  style: MyStyle().whiteStyle(),
-                                ),
-                              )),
-                          Container(
-                            height: 50,
-                            margin: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width * 0.05,
-                              right: MediaQuery.of(context).size.width * 0.05,
-                              top: 30,
-                              bottom: 30,
+                              color: Color(0xFFD8D8D8),
+                              textColor: Colors.white,
+                              onPressed: () {
+                                Navigator.pop(context, '/detail');
+                              },
+                              child: Text(
+                                'ยกเลิก',
+                                style: MyStyle().whiteStyle(),
+                              ),
                             ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
                             child: MaterialButton(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(
@@ -1426,9 +1899,16 @@ class _DetailScheduleState extends State<DetailSchedule> {
   }
 
   //ทีมงาน
-  var _listVertical = ["Vertical 1", "Vertical 2", "Vertical 3"];
-  var _keyVertical = GlobalKey<FlutterRadioGroupState>();
-  var _indexVertical = 1;
+  String default_choice = "COD";
+  int default_index = 0;
+
+  List<MyChoice> choices = [
+    MyChoice(index: 0, choices: "COD"),
+    MyChoice(index: 1, choices: "BBBB"),
+    MyChoice(index: 2, choices: "AAAA"),
+    MyChoice(index: 3, choices: "CCCCCC"),
+  ];
+
   Widget cardAA() {
     return Container(
       margin: EdgeInsets.only(
@@ -1470,19 +1950,17 @@ class _DetailScheduleState extends State<DetailSchedule> {
                               height: 500,
                               child: ListView(
                                 children: [
-                                  Container(
-                                    margin: EdgeInsets.only(
-                                      left: MediaQuery.of(context).size.width *
-                                          0.05,
-                                      right: MediaQuery.of(context).size.width *
-                                          0.05,
-                                      top: 30,
-                                    ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
                                     child: Column(
                                       children: [
-                                        Text(
-                                          'เพิ่มคนในทีม',
-                                          style: MyStyle().blueStyle(),
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              0, 20, 0, 0),
+                                          child: Text(
+                                            'เพิ่มคนในทีม',
+                                            style: MyStyle().blueStyle(),
+                                          ),
                                         ),
                                         Container(
                                           margin: EdgeInsets.only(
@@ -1490,18 +1968,19 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                             bottom: 10,
                                           ),
                                           child: Column(
-                                            children: <Widget>[
-                                              FlutterRadioGroup(
-                                                  key: _keyVertical,
-                                                  titles: _listVertical,
-                                                  defaultSelected:
-                                                      _indexVertical,
-                                                  onChanged: (index) {
-                                                    setState(() {
-                                                      _indexVertical = index!;
-                                                    });
-                                                  }),
-                                            ],
+                                            children: requestTeamMembers
+                                                .map(
+                                                  (e) => RadioListTile(
+                                                    title:
+                                                        Text('${e.driverCode}'),
+                                                    value: e.active,
+                                                    groupValue: default_index,
+                                                    onChanged: (value) {
+                                                      setState(() {});
+                                                    },
+                                                  ),
+                                                )
+                                                .toList(),
                                           ),
                                         ),
                                       ],
@@ -1512,24 +1991,18 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                         MainAxisAlignment.spaceAround,
                                     children: [
                                       MaterialButton(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(5),
-                                          ),
-                                        ),
+                                        height: 50,
                                         color: MyStyle().buttongray,
                                         child: Text(
                                           'ยกเลิก',
                                           style: MyStyle().whiteStyle(),
                                         ),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
                                       ),
                                       MaterialButton(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(5),
-                                          ),
-                                        ),
+                                        height: 50,
                                         color: MyStyle().buttongreen,
                                         child: Text(
                                           'เพิ่ม',
@@ -1574,9 +2047,10 @@ class _DetailScheduleState extends State<DetailSchedule> {
                 left: MediaQuery.of(context).size.width * 0.05,
                 right: MediaQuery.of(context).size.width * 0.05,
                 top: 20,
+                bottom: 10,
               ),
               child: Column(
-                children: headerTeam
+                children: member!
                     .map(
                       (e) => Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1618,7 +2092,38 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                 icon: Icon(Icons.delete),
                                 color: MyStyle().redyColor,
                                 onPressed: () {
-                                  _deleteTeamMember(e.driverCode);
+                                  showDialog(
+                                    context: context,
+                                    barrierDismissible:
+                                        false, // user must tap button!
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('Alert'),
+                                        content: SingleChildScrollView(
+                                          child: Column(
+                                            children: <Widget>[
+                                              Text(
+                                                  'คุณต้องการลบสมาชิกคนนี้ไหม?'),
+                                            ],
+                                          ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: Text('Cancel'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                          TextButton(
+                                            child: Text('OK'),
+                                            onPressed: () {
+                                              _deleteTeamMember(e.driverCode);
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
                                 },
                               ),
                             ],
@@ -1684,12 +2189,8 @@ class _DetailScheduleState extends State<DetailSchedule> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Container(
-                            margin: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width * 0.05,
-                              right: MediaQuery.of(context).size.width * 0.05,
-                              top: 30,
-                            ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
                             child: Text(
                               'ยกเลิกงาน',
                               style: MyStyle().redStyle(),
@@ -1708,7 +2209,6 @@ class _DetailScheduleState extends State<DetailSchedule> {
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
                                 'เหตุผลยกเลิกงาน',
@@ -1745,29 +2245,30 @@ class _DetailScheduleState extends State<DetailSchedule> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Container(
-                              height: 50,
-                              margin: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width * 0.05,
-                                right: MediaQuery.of(context).size.width * 0.05,
-                                top: 30,
-                                bottom: 30,
+                            height: 50,
+                            margin: EdgeInsets.only(
+                              left: MediaQuery.of(context).size.width * 0.05,
+                              right: MediaQuery.of(context).size.width * 0.05,
+                              top: 30,
+                              bottom: 30,
+                            ),
+                            child: MaterialButton(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(5),
+                                ),
                               ),
-                              child: MaterialButton(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(5),
-                                  ),
-                                ),
-                                color: Color(0xFFD8D8D8),
-                                textColor: Colors.white,
-                                onPressed: () {
-                                  Navigator.pop(context, '/detail');
-                                },
-                                child: Text(
-                                  'ยกเลิก',
-                                  style: MyStyle().whiteStyle(),
-                                ),
-                              )),
+                              color: Color(0xFFD8D8D8),
+                              textColor: Colors.white,
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                'ยกเลิก',
+                                style: MyStyle().whiteStyle(),
+                              ),
+                            ),
+                          ),
                           Container(
                             height: 50,
                             margin: EdgeInsets.only(
@@ -1896,23 +2397,15 @@ class _DetailScheduleState extends State<DetailSchedule> {
                       ),
                       Column(
                         children: [
-                          Container(
-                            margin: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width * 0.05,
-                              right: MediaQuery.of(context).size.width * 0.05,
-                              top: 10,
-                            ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
                             child: Text(
                               'เพิ่มรายการรถ',
                               style: MyStyle().blueHeaderStyle(),
                             ),
                           ),
-                          Container(
-                            margin: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width * 0.05,
-                              right: MediaQuery.of(context).size.width * 0.05,
-                              top: 10,
-                            ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -1953,47 +2446,23 @@ class _DetailScheduleState extends State<DetailSchedule> {
                           ),
                           FormBuilder(
                             key: _fbKey,
-                            initialValue: {
-                              'ItemCode': '',
-                              'BrandNameEng': '',
-                              'ModelName': '',
-                              'Color': '',
-                              'LicensePlateNo': '',
-                              'ManufactureYear': ''
-                            },
                             child: Column(
                               children: [
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                        left:
-                                            MediaQuery.of(context).size.width *
-                                                0.05,
-                                        right:
-                                            MediaQuery.of(context).size.width *
-                                                0.05,
-                                        top: 10,
-                                      ),
-                                      child: Text('ItemCode'),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text('รหัสรายการรถ'),
                                     ),
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                        left:
-                                            MediaQuery.of(context).size.width *
-                                                0.05,
-                                        right:
-                                            MediaQuery.of(context).size.width *
-                                                0.05,
-                                        top: 10,
-                                      ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
                                       child: TextFormField(
                                         controller: itemCode,
                                         keyboardType: TextInputType.text,
                                         decoration: InputDecoration(
                                           border: OutlineInputBorder(),
-                                          labelText: 'itemCode',
+                                          labelText: 'รหัสรายการรถ',
                                         ),
                                         validator: itemCodeValidator,
                                       ),
@@ -2003,28 +2472,12 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                        left:
-                                            MediaQuery.of(context).size.width *
-                                                0.05,
-                                        right:
-                                            MediaQuery.of(context).size.width *
-                                                0.05,
-                                        top: 10,
-                                      ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
                                       child: Text('ยี่ห้อ'),
                                     ),
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                        left:
-                                            MediaQuery.of(context).size.width *
-                                                0.05,
-                                        right:
-                                            MediaQuery.of(context).size.width *
-                                                0.05,
-                                        top: 10,
-                                      ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
                                       child: TextFormField(
                                         controller: brandNameEng,
                                         keyboardType: TextInputType.text,
@@ -2040,29 +2493,12 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                          left: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.05,
-                                          right: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.05,
-                                          top: 10),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
                                       child: Text('รุ่น'),
                                     ),
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                        left:
-                                            MediaQuery.of(context).size.width *
-                                                0.05,
-                                        right:
-                                            MediaQuery.of(context).size.width *
-                                                0.05,
-                                        top: 10,
-                                      ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
                                       child: TextFormField(
                                           controller: modelName,
                                           keyboardType: TextInputType.text,
@@ -2077,30 +2513,12 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                          left: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.05,
-                                          right: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.05,
-                                          top: 10),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
                                       child: Text('สี'),
                                     ),
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                          left: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.05,
-                                          right: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.05,
-                                          top: 10),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
                                       child: TextFormField(
                                         controller: color,
                                         keyboardType: TextInputType.text,
@@ -2116,28 +2534,12 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                        left:
-                                            MediaQuery.of(context).size.width *
-                                                0.05,
-                                        right:
-                                            MediaQuery.of(context).size.width *
-                                                0.05,
-                                        top: 10,
-                                      ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
                                       child: Text('ทะเบียนรถ'),
                                     ),
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                        left:
-                                            MediaQuery.of(context).size.width *
-                                                0.05,
-                                        right:
-                                            MediaQuery.of(context).size.width *
-                                                0.05,
-                                        top: 10,
-                                      ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
                                       child: TextFormField(
                                         controller: licensePlateNo,
                                         keyboardType: TextInputType.text,
@@ -2153,28 +2555,12 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                        left:
-                                            MediaQuery.of(context).size.width *
-                                                0.05,
-                                        right:
-                                            MediaQuery.of(context).size.width *
-                                                0.05,
-                                        top: 10,
-                                      ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
                                       child: Text('ปีผลิต'),
                                     ),
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                        left:
-                                            MediaQuery.of(context).size.width *
-                                                0.05,
-                                        right:
-                                            MediaQuery.of(context).size.width *
-                                                0.05,
-                                        top: 10,
-                                      ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
                                       child: TextFormField(
                                         controller: manufactureYear,
                                         keyboardType: TextInputType.number,
@@ -2190,12 +2576,8 @@ class _DetailScheduleState extends State<DetailSchedule> {
                               ],
                             ),
                           ),
-                          Container(
-                            margin: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width * 0.05,
-                              right: MediaQuery.of(context).size.width * 0.05,
-                              top: 10,
-                            ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -2237,41 +2619,30 @@ class _DetailScheduleState extends State<DetailSchedule> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                Container(
-                                    height: 50,
-                                    margin: EdgeInsets.only(
-                                      left: MediaQuery.of(context).size.width *
-                                          0.05,
-                                      right: MediaQuery.of(context).size.width *
-                                          0.05,
-                                      top: 30,
-                                    ),
-                                    child: MaterialButton(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(5),
-                                        ),
-                                      ),
-                                      color: Color(0xFFD8D8D8),
-                                      textColor: Colors.white,
-                                      onPressed: () {
-                                        Navigator.pop(context, '/detail');
-                                      },
-                                      child: Text(
-                                        'ยกเลิก',
-                                        style: MyStyle().whiteStyle(),
-                                      ),
-                                    )),
-                                Container(
-                                  height: 50,
-                                  margin: EdgeInsets.only(
-                                    left: MediaQuery.of(context).size.width *
-                                        0.05,
-                                    right: MediaQuery.of(context).size.width *
-                                        0.05,
-                                    top: 30,
-                                  ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
                                   child: MaterialButton(
+                                    height: 50,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(5),
+                                      ),
+                                    ),
+                                    color: Color(0xFFD8D8D8),
+                                    textColor: Colors.white,
+                                    onPressed: () {
+                                      Navigator.pop(context, '/detail');
+                                    },
+                                    child: Text(
+                                      'ยกเลิก',
+                                      style: MyStyle().whiteStyle(),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: MaterialButton(
+                                    height: 50,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(5),
@@ -2304,405 +2675,6 @@ class _DetailScheduleState extends State<DetailSchedule> {
           );
         },
       );
-
-  //แก้ไขรายการรับรถ
-  updateFrom() {
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          child: Container(
-            height: 600,
-            child: ListView(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(top: 30),
-                ),
-                Column(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(
-                        left: MediaQuery.of(context).size.width * 0.05,
-                        right: MediaQuery.of(context).size.width * 0.05,
-                        top: 10,
-                      ),
-                      child: Text(
-                        'แก้ไขรายการรถ',
-                        style: MyStyle().blueHeaderStyle(),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(
-                        left: MediaQuery.of(context).size.width * 0.05,
-                        right: MediaQuery.of(context).size.width * 0.05,
-                        top: 10,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text('รูปภาพประกอบ'),
-                          Padding(
-                            padding: EdgeInsets.all(5),
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: new InkWell(
-                                onTap: () async {
-                                  Navigator.of(context, rootNavigator: true)
-                                      .pushNamed('/camera');
-                                },
-                                child: Column(
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          50, 15, 50, 15),
-                                      child: Column(
-                                        children: [
-                                          Icon(
-                                            Icons.camera_alt,
-                                            size: 80,
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    FormBuilder(
-                      key: _fbKey,
-                      initialValue: {
-                        'ItemCode': '',
-                        'BrandNameEng': '',
-                        'ModelName': '',
-                        'Color': '',
-                        'LicensePlateNo': '',
-                        'ManufactureYear': ''
-                      },
-                      child: Column(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  right:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  top: 10,
-                                ),
-                                child: Text('ItemCode'),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  right:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  top: 10,
-                                ),
-                                child: TextFormField(
-                                  controller: itemCode,
-                                  keyboardType: TextInputType.text,
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: 'itemCode',
-                                  ),
-                                  validator: itemCodeValidator,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  right:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  top: 10,
-                                ),
-                                child: Text('ยี่ห้อ'),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  right:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  top: 10,
-                                ),
-                                child: TextFormField(
-                                  controller: brandNameEng,
-                                  keyboardType: TextInputType.text,
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: 'brandNameEng',
-                                  ),
-                                  validator: brandNameEngValidator,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(
-                                    left: MediaQuery.of(context).size.width *
-                                        0.05,
-                                    right: MediaQuery.of(context).size.width *
-                                        0.05,
-                                    top: 10),
-                                child: Text('รุ่น'),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  right:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  top: 10,
-                                ),
-                                child: TextFormField(
-                                    controller: modelName,
-                                    keyboardType: TextInputType.text,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      labelText: 'ModelName',
-                                    ),
-                                    validator: modelNameValidator),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(
-                                    left: MediaQuery.of(context).size.width *
-                                        0.05,
-                                    right: MediaQuery.of(context).size.width *
-                                        0.05,
-                                    top: 10),
-                                child: Text('สี'),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(
-                                    left: MediaQuery.of(context).size.width *
-                                        0.05,
-                                    right: MediaQuery.of(context).size.width *
-                                        0.05,
-                                    top: 10),
-                                child: TextFormField(
-                                  controller: color,
-                                  keyboardType: TextInputType.text,
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: 'Color',
-                                  ),
-                                  validator: colorValidator,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  right:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  top: 10,
-                                ),
-                                child: Text('ทะเบียนรถ'),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  right:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  top: 10,
-                                ),
-                                child: TextFormField(
-                                  controller: licensePlateNo,
-                                  keyboardType: TextInputType.text,
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: 'LicensePlateNo',
-                                  ),
-                                  validator: licensePlateNoValidator,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  right:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  top: 10,
-                                ),
-                                child: Text('ปีผลิต'),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  right:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  top: 10,
-                                ),
-                                child: TextFormField(
-                                  controller: manufactureYear,
-                                  keyboardType: TextInputType.number,
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: 'ManufactureYear',
-                                  ),
-                                  validator: manufactureYearValidator,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(
-                        left: MediaQuery.of(context).size.width * 0.05,
-                        right: MediaQuery.of(context).size.width * 0.05,
-                        top: 10,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text('รูปเล่มทะเบียนรถ'),
-                          Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: new InkWell(
-                              onTap: () {
-                                Navigator.of(context, rootNavigator: true)
-                                    .pushNamed('/camera');
-                              },
-                              child: Column(
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        50, 15, 50, 15),
-                                    child: Column(
-                                      children: [
-                                        Icon(
-                                          Icons.camera_alt,
-                                          size: 80,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(
-                        bottom: 20,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                              height: 50,
-                              margin: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width * 0.05,
-                                right: MediaQuery.of(context).size.width * 0.05,
-                                top: 30,
-                              ),
-                              child: MaterialButton(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(5),
-                                  ),
-                                ),
-                                color: Color(0xFFD8D8D8),
-                                textColor: Colors.white,
-                                onPressed: () {
-                                  Navigator.pop(context, '/detail');
-                                },
-                                child: Text(
-                                  'ยกเลิก',
-                                  style: MyStyle().whiteStyle(),
-                                ),
-                              )),
-                          Container(
-                            height: 50,
-                            margin: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width * 0.05,
-                              right: MediaQuery.of(context).size.width * 0.05,
-                              top: 30,
-                            ),
-                            child: MaterialButton(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(5),
-                                ),
-                              ),
-                              color: Color(0xFF82DD55),
-                              textColor: Colors.white,
-                              onPressed: () {
-                                if (_fbKey.currentState!.saveAndValidate()) {
-                                  _updateFormItemCard(
-                                    {
-                                      "itemCode": itemCode.text,
-                                      "brandNameEng": brandNameEng.text,
-                                      "modelName": modelName.text,
-                                      "color": color.text,
-                                      "licensePlateNo": licensePlateNo.text,
-                                      "manufactureYear": manufactureYear.text,
-                                    },
-                                  );
-                                }
-                              },
-                              child: Text(
-                                'ยืนยัน',
-                                style: MyStyle().whiteStyle(),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
 
   // button นำส่ง
   Widget buttonWaitingCard() {

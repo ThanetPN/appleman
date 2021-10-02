@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
    <application
-        android:label="Apple Man"
+        android:label="ระบบรับ-ส่งรถ"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
