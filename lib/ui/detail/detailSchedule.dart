@@ -9,15 +9,6 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-class MyChoice {
-  String choices;
-  int index;
-  MyChoice({
-    required this.index,
-    required this.choices,
-  });
-}
-
 class DetailSchedule extends StatefulWidget {
   DetailSchedule({Key? key}) : super(key: key);
 
@@ -483,24 +474,16 @@ class _DetailScheduleState extends State<DetailSchedule> {
               children: [
                 Column(
                   children: [
-                    Container(
-                      margin: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width * 0.05,
-                          right: MediaQuery.of(context).size.width * 0.05,
-                          top: 30),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Card(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              margin: EdgeInsets.only(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  right:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  top: 20),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -589,10 +572,8 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                 ],
                               ),
                             ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                top: 10,
-                              ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: SizedBox(
                                 width: double.infinity,
                                 height: 5,
@@ -611,25 +592,15 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                 ),
                               ),
                             ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  right:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  top: 10),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 'ผู้ขาย',
                                 style: MyStyle().blueStyle(),
                               ),
                             ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  right:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  top: 10),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -651,25 +622,15 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                 ],
                               ),
                             ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  right:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  top: 10),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 'ผู้ติดต่อ',
                                 style: MyStyle().blueStyle(),
                               ),
                             ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  right:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  top: 10),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -689,13 +650,8 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                 ],
                               ),
                             ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  right:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  top: 10),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -727,13 +683,8 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                 ],
                               ),
                             ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  right:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  top: 10),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 children: [
                                   Icon(Icons.directions_car),
@@ -744,24 +695,14 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                 ],
                               ),
                             ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  right:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  top: 10),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Text(requestDetail == null
                                   ? '-'
                                   : 'หมายเหตุ : ${requestDetail.remark.toString()} น.'),
                             ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  right:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  top: 10),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -824,13 +765,8 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                 ],
                               ),
                             ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width * 0.05,
-                                right: MediaQuery.of(context).size.width * 0.05,
-                                top: 10,
-                                bottom: 30,
-                              ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -1008,12 +944,8 @@ class _DetailScheduleState extends State<DetailSchedule> {
 
   //items Card == รอการยืนยัน
   Widget draftAA() {
-    return Container(
-      margin: EdgeInsets.only(
-        left: MediaQuery.of(context).size.width * 0.05,
-        right: MediaQuery.of(context).size.width * 0.05,
-        top: 10,
-      ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
       child: Column(
         children: requestItems
             .map(
@@ -1022,11 +954,8 @@ class _DetailScheduleState extends State<DetailSchedule> {
                     borderRadius: BorderRadius.circular(10)),
                 child: Column(
                   children: [
-                    Container(
-                      margin: EdgeInsets.only(
-                        left: MediaQuery.of(context).size.width * 0.05,
-                        right: MediaQuery.of(context).size.width * 0.05,
-                      ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Row(
                         children: [
                           Image.asset(
@@ -1069,25 +998,16 @@ class _DetailScheduleState extends State<DetailSchedule> {
 
   //items Card == รอดำเนินการ
   Widget pendingAA() {
-    return Container(
-      margin: EdgeInsets.only(
-        left: MediaQuery.of(context).size.width * 0.05,
-        right: MediaQuery.of(context).size.width * 0.05,
-        top: 10,
-      ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
       child: Column(
         children: requestItems
             .map(
               (RequestItem? e) => Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
                 child: Column(
                   children: [
-                    Container(
-                      margin: EdgeInsets.only(
-                        left: MediaQuery.of(context).size.width * 0.05,
-                        right: MediaQuery.of(context).size.width * 0.05,
-                      ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Row(
                         children: [
                           Image.asset(
@@ -1130,12 +1050,8 @@ class _DetailScheduleState extends State<DetailSchedule> {
 
   //items Card == รอดำเนินการ
   Widget waitingCar() {
-    return Container(
-      margin: EdgeInsets.only(
-        left: MediaQuery.of(context).size.width * 0.05,
-        right: MediaQuery.of(context).size.width * 0.05,
-        top: 10,
-      ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
       child: Column(
         children: requestItems
             .map(
@@ -1144,11 +1060,8 @@ class _DetailScheduleState extends State<DetailSchedule> {
                     borderRadius: BorderRadius.circular(10)),
                 child: Column(
                   children: [
-                    Container(
-                      margin: EdgeInsets.only(
-                        left: MediaQuery.of(context).size.width * 0.05,
-                        right: MediaQuery.of(context).size.width * 0.05,
-                      ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Row(
                         children: [
                           Image.asset(
@@ -1191,18 +1104,12 @@ class _DetailScheduleState extends State<DetailSchedule> {
 
   //card requestItem การเพิ่มรายการรับรถ รอดำเนินการ
   Widget insertAddCarCard() {
-    return Container(
-      margin: EdgeInsets.only(
-        left: MediaQuery.of(context).size.width * 0.05,
-        right: MediaQuery.of(context).size.width * 0.05,
-        top: 10,
-      ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
       child: Column(
         children: requestItems
             .map(
               (RequestItem? e) => Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
                 child: Column(
                   children: [
                     Padding(
@@ -1578,10 +1485,10 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                                       ],
                                                     ),
                                                   ),
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                      bottom: 20,
-                                                    ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
                                                     child: Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
@@ -1602,8 +1509,8 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                                                     5),
                                                               ),
                                                             ),
-                                                            color: Color(
-                                                                0xFFD8D8D8),
+                                                            color: MyStyle()
+                                                                .buttongray,
                                                             textColor:
                                                                 Colors.white,
                                                             onPressed: () {
@@ -1633,8 +1540,8 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                                                     5),
                                                               ),
                                                             ),
-                                                            color: Color(
-                                                                0xFF82DD55),
+                                                            color: MyStyle()
+                                                                .buttongray,
                                                             textColor:
                                                                 Colors.white,
                                                             onPressed: () {
@@ -1681,7 +1588,7 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                           child: Column(
                                             children: <Widget>[
                                               Text(
-                                                  'คุณต้องการลบรายการรับรถนี้ไหม?'),
+                                                  'คุณต้องการลบรายการรับรถนี้ใช่ไหม?'),
                                             ],
                                           ),
                                         ),
@@ -1725,14 +1632,8 @@ class _DetailScheduleState extends State<DetailSchedule> {
         RequiredValidator(errorText: 'Enter your Description'),
       ],
     );
-    return Container(
-      height: 50,
-      margin: EdgeInsets.only(
-        left: MediaQuery.of(context).size.width * 0.05,
-        right: MediaQuery.of(context).size.width * 0.05,
-        top: 10,
-        bottom: 20,
-      ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
       child: MaterialButton(
         minWidth: 120,
         shape: RoundedRectangleBorder(
@@ -1773,12 +1674,8 @@ class _DetailScheduleState extends State<DetailSchedule> {
                       FormBuilder(
                         key: _fbKey,
                         initialValue: {'Description': ''},
-                        child: Container(
-                          margin: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width * 0.05,
-                            right: MediaQuery.of(context).size.width * 0.05,
-                            top: 10,
-                          ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -1788,8 +1685,8 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                 style: MyStyle().garyStyle(),
                               ),
                               //Text input
-                              Container(
-                                margin: EdgeInsets.only(top: 16),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
                                 child: TextFormField(
                                   controller: Description,
                                   maxLines: 4,
@@ -1827,7 +1724,7 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                   Radius.circular(5),
                                 ),
                               ),
-                              color: Color(0xFFD8D8D8),
+                              color: MyStyle().buttongray,
                               textColor: Colors.white,
                               onPressed: () {
                                 Navigator.pop(context, '/detail');
@@ -1846,7 +1743,7 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                   Radius.circular(5),
                                 ),
                               ),
-                              color: Color(0xFF82DD55),
+                              color: MyStyle().buttongreen,
                               textColor: Colors.white,
                               onPressed: () {
                                 if (_fbKey.currentState!.saveAndValidate()) {
@@ -1874,14 +1771,8 @@ class _DetailScheduleState extends State<DetailSchedule> {
 
   //button ยืนยันรับงาน
   Widget buttonConfirm() {
-    return Container(
-      height: 50,
-      margin: EdgeInsets.only(
-        left: MediaQuery.of(context).size.width * 0.05,
-        right: MediaQuery.of(context).size.width * 0.05,
-        top: 10,
-        bottom: 20,
-      ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
       child: MaterialButton(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
@@ -1899,32 +1790,15 @@ class _DetailScheduleState extends State<DetailSchedule> {
   }
 
   //ทีมงาน
-  String default_choice = "COD";
-  int default_index = 0;
-
-  List<MyChoice> choices = [
-    MyChoice(index: 0, choices: "COD"),
-    MyChoice(index: 1, choices: "BBBB"),
-    MyChoice(index: 2, choices: "AAAA"),
-    MyChoice(index: 3, choices: "CCCCCC"),
-  ];
 
   Widget cardAA() {
-    return Container(
-      margin: EdgeInsets.only(
-        left: MediaQuery.of(context).size.width * 0.05,
-        right: MediaQuery.of(context).size.width * 0.05,
-        top: 20,
-      ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
       child: Card(
         child: Column(
           children: [
-            Container(
-              margin: EdgeInsets.only(
-                left: MediaQuery.of(context).size.width * 0.05,
-                right: MediaQuery.of(context).size.width * 0.05,
-                top: 20,
-              ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -1939,83 +1813,11 @@ class _DetailScheduleState extends State<DetailSchedule> {
                     iconSize: 30,
                     color: MyStyle().buttongreen,
                     onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            child: Container(
-                              height: 500,
-                              child: ListView(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              0, 20, 0, 0),
-                                          child: Text(
-                                            'เพิ่มคนในทีม',
-                                            style: MyStyle().blueStyle(),
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                            top: 10,
-                                            bottom: 10,
-                                          ),
-                                          child: Column(
-                                            children: requestTeamMembers
-                                                .map(
-                                                  (e) => RadioListTile(
-                                                    title:
-                                                        Text('${e.driverCode}'),
-                                                    value: e.active,
-                                                    groupValue: default_index,
-                                                    onChanged: (value) {
-                                                      setState(() {});
-                                                    },
-                                                  ),
-                                                )
-                                                .toList(),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      MaterialButton(
-                                        height: 50,
-                                        color: MyStyle().buttongray,
-                                        child: Text(
-                                          'ยกเลิก',
-                                          style: MyStyle().whiteStyle(),
-                                        ),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                      ),
-                                      MaterialButton(
-                                        height: 50,
-                                        color: MyStyle().buttongreen,
-                                        child: Text(
-                                          'เพิ่ม',
-                                          style: MyStyle().whiteStyle(),
-                                        ),
-                                        onPressed: () {},
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
+                      Navigator.pushNamed(
+                        context,
+                        '/add-member',
+                        arguments: {
+                          'RequestID': RequestID,
                         },
                       );
                     },
@@ -2023,7 +1825,8 @@ class _DetailScheduleState extends State<DetailSchedule> {
                 ],
               ),
             ),
-            Container(
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: SizedBox(
                 width: double.infinity,
                 height: 5,
@@ -2042,13 +1845,8 @@ class _DetailScheduleState extends State<DetailSchedule> {
                 ),
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(
-                left: MediaQuery.of(context).size.width * 0.05,
-                right: MediaQuery.of(context).size.width * 0.05,
-                top: 20,
-                bottom: 10,
-              ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: member!
                     .map(
@@ -2070,11 +1868,8 @@ class _DetailScheduleState extends State<DetailSchedule> {
                     .toList(),
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(
-                left: MediaQuery.of(context).size.width * 0.05,
-                right: MediaQuery.of(context).size.width * 0.05,
-              ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: requestTeamMembers
                     .map(
@@ -2103,7 +1898,7 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                           child: Column(
                                             children: <Widget>[
                                               Text(
-                                                  'คุณต้องการลบสมาชิกคนนี้ไหม?'),
+                                                  'คุณต้องการลบสมาชิกคนนี้ใช่ไหม?'),
                                             ],
                                           ),
                                         ),
@@ -2153,14 +1948,8 @@ class _DetailScheduleState extends State<DetailSchedule> {
         RequiredValidator(errorText: 'Enter your Description'),
       ],
     );
-    return Container(
-      height: 50,
-      margin: EdgeInsets.only(
-        left: MediaQuery.of(context).size.width * 0.05,
-        right: MediaQuery.of(context).size.width * 0.05,
-        top: 20,
-        bottom: 20,
-      ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
       child: MaterialButton(
         minWidth: 120,
         shape: RoundedRectangleBorder(
@@ -2201,12 +1990,8 @@ class _DetailScheduleState extends State<DetailSchedule> {
                       FormBuilder(
                         key: _fbKey,
                         initialValue: {'Description': ''},
-                        child: Container(
-                          margin: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width * 0.05,
-                            right: MediaQuery.of(context).size.width * 0.05,
-                            top: 10,
-                          ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -2244,21 +2029,15 @@ class _DetailScheduleState extends State<DetailSchedule> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Container(
-                            height: 50,
-                            margin: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width * 0.05,
-                              right: MediaQuery.of(context).size.width * 0.05,
-                              top: 30,
-                              bottom: 30,
-                            ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
                             child: MaterialButton(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(5),
                                 ),
                               ),
-                              color: Color(0xFFD8D8D8),
+                              color: MyStyle().buttongray,
                               textColor: Colors.white,
                               onPressed: () {
                                 Navigator.pop(context);
@@ -2269,21 +2048,15 @@ class _DetailScheduleState extends State<DetailSchedule> {
                               ),
                             ),
                           ),
-                          Container(
-                            height: 50,
-                            margin: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width * 0.05,
-                              right: MediaQuery.of(context).size.width * 0.05,
-                              top: 30,
-                              bottom: 30,
-                            ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
                             child: MaterialButton(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(5),
                                 ),
                               ),
-                              color: Color(0xFF82DD55),
+                              color: MyStyle().buttongreen,
                               textColor: Colors.white,
                               onPressed: () {
                                 if (_fbKey.currentState!.saveAndValidate()) {
@@ -2311,14 +2084,8 @@ class _DetailScheduleState extends State<DetailSchedule> {
 
   //button ยืนยันรับรถ
   Widget buttonConfirmCar() {
-    return Container(
-      height: 50,
-      margin: EdgeInsets.only(
-        left: MediaQuery.of(context).size.width * 0.05,
-        right: MediaQuery.of(context).size.width * 0.05,
-        top: 20,
-        bottom: 20,
-      ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
       child: MaterialButton(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
@@ -2375,7 +2142,7 @@ class _DetailScheduleState extends State<DetailSchedule> {
   );
   //icon car
   Widget buildButton() => FloatingActionButton(
-        backgroundColor: Color(0xFF82DD55),
+        backgroundColor: MyStyle().buttongreen,
         child: const Icon(
           Icons.directions_car,
           size: 30,
@@ -2385,9 +2152,6 @@ class _DetailScheduleState extends State<DetailSchedule> {
             context: context,
             builder: (context) {
               return Dialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
                 child: Container(
                   height: 600,
                   child: ListView(
@@ -2612,10 +2376,8 @@ class _DetailScheduleState extends State<DetailSchedule> {
                               ],
                             ),
                           ),
-                          Container(
-                            margin: EdgeInsets.only(
-                              bottom: 20,
-                            ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
@@ -2628,7 +2390,7 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                         Radius.circular(5),
                                       ),
                                     ),
-                                    color: Color(0xFFD8D8D8),
+                                    color: MyStyle().buttongray,
                                     textColor: Colors.white,
                                     onPressed: () {
                                       Navigator.pop(context, '/detail');
@@ -2648,7 +2410,7 @@ class _DetailScheduleState extends State<DetailSchedule> {
                                         Radius.circular(5),
                                       ),
                                     ),
-                                    color: Color(0xFF82DD55),
+                                    color: MyStyle().buttongreen,
                                     textColor: Colors.white,
                                     onPressed: () {
                                       if (_fbKey.currentState!
@@ -2678,13 +2440,8 @@ class _DetailScheduleState extends State<DetailSchedule> {
 
   // button นำส่ง
   Widget buttonWaitingCard() {
-    return Container(
-      margin: EdgeInsets.only(
-        left: MediaQuery.of(context).size.width * 0.05,
-        right: MediaQuery.of(context).size.width * 0.05,
-        top: 20,
-        bottom: 20,
-      ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
       child: MaterialButton(
         minWidth: 360,
         height: 50,

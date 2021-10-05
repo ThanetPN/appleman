@@ -102,10 +102,8 @@ class _LoginState extends State<Login> {
             key: _fbKey,
             child: Column(
               children: [
-                Container(
-                  margin: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width * 0.05,
-                      right: MediaQuery.of(context).size.width * 0.05),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     controller: userCode,
                     keyboardType: TextInputType.emailAddress,
@@ -116,11 +114,8 @@ class _LoginState extends State<Login> {
                     validator: userNameValidator,
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width * 0.05,
-                      right: MediaQuery.of(context).size.width * 0.05,
-                      top: 10),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                       controller: password,
                       keyboardType: TextInputType.visiblePassword,
@@ -133,15 +128,8 @@ class _LoginState extends State<Login> {
                 ),
               ],
             )),
-        Container(
-          margin: EdgeInsets.only(top: 30),
-        ),
-        Container(
-          height: 50,
-          margin: EdgeInsets.only(
-              left: MediaQuery.of(context).size.width * 0.05,
-              right: MediaQuery.of(context).size.width * 0.05,
-              top: 10),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
           child: MaterialButton(
             onPressed: () => {
               if (_fbKey.currentState!.saveAndValidate()) {_login()}
@@ -149,8 +137,6 @@ class _LoginState extends State<Login> {
             child: Text("Login",
                 style: TextStyle(fontSize: 20, color: Colors.white)),
             color: Colors.blue,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           ),
         ),
       ],

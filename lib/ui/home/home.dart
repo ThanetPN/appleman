@@ -143,7 +143,7 @@ class _HomeState extends State<Home> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: EdgeInsets.all(20),
+                      padding: EdgeInsets.all(8.0),
                       child: Card(
                         child: TableCalendar<Event>(
                           firstDay: kFirstDay,
@@ -210,290 +210,288 @@ class _HomeState extends State<Home> {
                           return ListView.separated(
                             itemBuilder: (BuildContext context, int index) {
                               return Padding(
-                                  padding: EdgeInsets.all(20),
+                                  padding: EdgeInsets.all(8.0),
                                   child: Card(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
                                       child: new InkWell(
-                                        onTap: () {
-                                          Navigator.pushNamed(
-                                              context, '/detail',
-                                              arguments: {
-                                                'RequestID':
-                                                    homeCard[index].requestId,
-                                                'EventCalendar':
-                                                    d.format(_focusedDay),
-                                                'RequestStatus': homeCard[index]
-                                                    .requestStatus
-                                              });
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        '/detail',
+                                        arguments: {
+                                          'RequestID':
+                                              homeCard[index].requestId,
+                                          'EventCalendar':
+                                              d.format(_focusedDay),
+                                          'RequestStatus':
+                                              homeCard[index].requestStatus
                                         },
-                                        child: Column(
-                                          children: <Widget>[
-                                            Padding(
-                                                padding:
-                                                    const EdgeInsets.all(15),
-                                                child: Column(
-                                                  children: [
+                                      );
+                                    },
+                                    child: Column(
+                                      children: <Widget>[
+                                        Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: <Widget>[
+                                                      Image.asset(
+                                                        'assets/icons/logo.webp',
+                                                        height: 50,
+                                                        width: 50,
+                                                      ),
+                                                      Icon(
+                                                        Icons.chevron_right,
+                                                        color: Colors.grey,
+                                                        size: 50,
+                                                      ),
+                                                      Icon(
+                                                        Icons.home,
+                                                        color: Colors.yellow,
+                                                        size: 50,
+                                                      ),
+                                                    ]),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: <Widget>[
                                                     Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceEvenly,
-                                                        children: <Widget>[
-                                                          Image.asset(
-                                                            'assets/icons/logo.webp',
-                                                            height: 50,
-                                                            width: 50,
-                                                          ),
-                                                          Icon(
-                                                            Icons.chevron_right,
-                                                            color: Colors.grey,
-                                                            size: 50,
-                                                          ),
-                                                          Icon(
-                                                            Icons.home,
-                                                            color:
-                                                                Colors.yellow,
-                                                            size: 50,
-                                                          ),
-                                                        ]),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: <Widget>[
-                                                        Row(
-                                                          children: [
-                                                            Icon(
-                                                              Icons.place,
-                                                              color: Colors.red,
-                                                            ),
-                                                            SizedBox(width: 10),
-                                                            Text(
-                                                              homeCard[index]
-                                                                  .wareHouseNameTha,
-                                                              style: MyStyle()
-                                                                  .garyStyle(),
-                                                            )
-                                                          ],
+                                                      children: [
+                                                        Icon(
+                                                          Icons.place,
+                                                          color: Colors.red,
                                                         ),
-                                                        Row(
-                                                          children: <Widget>[
-                                                            Icon(
-                                                              Icons.place,
-                                                              color: Colors.red,
-                                                            ),
-                                                            SizedBox(width: 10),
-                                                            Text(
-                                                              homeCard[index]
-                                                                  .locationNameTha,
-                                                              style: MyStyle()
-                                                                  .garyStyle(),
-                                                            )
-                                                          ],
+                                                        SizedBox(width: 10),
+                                                        Text(
+                                                          homeCard[index]
+                                                              .wareHouseNameTha,
+                                                          style: MyStyle()
+                                                              .garyStyle(),
                                                         )
                                                       ],
                                                     ),
                                                     Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
                                                       children: <Widget>[
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Row(children: <
-                                                                Widget>[
-                                                              Icon(
-                                                                Icons
-                                                                    .watch_later,
-                                                              ),
-                                                              SizedBox(
-                                                                  width: 10),
-                                                              Text(
-                                                                f.format(homeCard[
-                                                                        index]
-                                                                    .endEffectiveDate),
-                                                              )
-                                                            ]),
-                                                            SizedBox(width: 15),
-                                                            Row(
-                                                              children: <
-                                                                  Widget>[
-                                                                Icon(
-                                                                  Icons
-                                                                      .drive_eta,
-                                                                ),
-                                                                SizedBox(
-                                                                    width: 10),
-                                                                Text(
-                                                                    '${homeCard[index].amount.toString()} คัน')
-                                                              ],
-                                                            ),
-                                                          ],
+                                                        Icon(
+                                                          Icons.place,
+                                                          color: Colors.red,
                                                         ),
-                                                        Row(
-                                                          children: [
-                                                            Container(
-                                                              child: homeCard[index]
-                                                                          .requestStatus ==
-                                                                      'รอการยืนยัน'
-                                                                  ? MaterialButton(
-                                                                      shape:
-                                                                          RoundedRectangleBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.all(
-                                                                          Radius.circular(
-                                                                              5),
-                                                                        ),
-                                                                      ),
-                                                                      color: MyStyle()
-                                                                          .garyssColor,
-                                                                      child:
-                                                                          Text(
-                                                                        homeCard[index]
-                                                                            .requestStatus,
-                                                                        style: MyStyle()
-                                                                            .whiteStyle(),
-                                                                      ),
-                                                                      onPressed:
-                                                                          () {},
-                                                                    )
-                                                                  : errorA(),
-                                                            ),
-                                                            Container(
-                                                              child: homeCard[index]
-                                                                          .requestStatus ==
-                                                                      'รอดำเนินการ'
-                                                                  ? MaterialButton(
-                                                                      shape:
-                                                                          RoundedRectangleBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.all(
-                                                                          Radius.circular(
-                                                                              5),
-                                                                        ),
-                                                                      ),
-                                                                      color: MyStyle()
-                                                                          .yellowColor,
-                                                                      child:
-                                                                          Text(
-                                                                        homeCard[index]
-                                                                            .requestStatus,
-                                                                        style: MyStyle()
-                                                                            .whiteStyle(),
-                                                                      ),
-                                                                      onPressed:
-                                                                          () {},
-                                                                    )
-                                                                  : errorA(),
-                                                            ),
-                                                            Container(
-                                                              child: homeCard[index]
-                                                                          .requestStatus ==
-                                                                      'รอนำส่งรถ'
-                                                                  ? MaterialButton(
-                                                                      shape:
-                                                                          RoundedRectangleBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.all(
-                                                                          Radius.circular(
-                                                                              5),
-                                                                        ),
-                                                                      ),
-                                                                      color: MyStyle()
-                                                                          .yellowColor,
-                                                                      child:
-                                                                          Text(
-                                                                        homeCard[index]
-                                                                            .requestStatus,
-                                                                        style: MyStyle()
-                                                                            .whiteStyle(),
-                                                                      ),
-                                                                      onPressed:
-                                                                          () {},
-                                                                    )
-                                                                  : errorA(),
-                                                            ),
-                                                            Container(
-                                                              child: homeCard[index]
-                                                                          .requestStatus ==
-                                                                      'เสร็จสิ้น'
-                                                                  ? MaterialButton(
-                                                                      shape:
-                                                                          RoundedRectangleBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.all(
-                                                                          Radius.circular(
-                                                                              5),
-                                                                        ),
-                                                                      ),
-                                                                      color: MyStyle()
-                                                                          .greenColor,
-                                                                      child:
-                                                                          Text(
-                                                                        homeCard[index]
-                                                                            .requestStatus,
-                                                                        style: MyStyle()
-                                                                            .whiteStyle(),
-                                                                      ),
-                                                                      onPressed:
-                                                                          () {},
-                                                                    )
-                                                                  : errorA(),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: <Widget>[
-                                                        Row(
-                                                          children: <Widget>[
-                                                            Text(
-                                                                'หมายเหตุ : ${homeCard[index].remark.toString()} น.')
-                                                          ],
-                                                        ),
-                                                        Row(
-                                                          children: <Widget>[
-                                                            CircleAvatar(
-                                                              backgroundImage:
-                                                                  AssetImage(
-                                                                      'assets/images/profile.jpg'),
-                                                              radius: 20,
-                                                            ),
-                                                            CircleAvatar(
-                                                              backgroundImage:
-                                                                  AssetImage(
-                                                                      'assets/images/profile.jpg'),
-                                                              radius: 20,
-                                                            ),
-                                                            Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .end,
-                                                                children: <
-                                                                    Widget>[
-                                                                  Text('+10'),
-                                                                  Icon(
-                                                                    Icons
-                                                                        .more_horiz,
-                                                                  ),
-                                                                ])
-                                                          ],
+                                                        SizedBox(width: 10),
+                                                        Text(
+                                                          homeCard[index]
+                                                              .locationNameTha,
+                                                          style: MyStyle()
+                                                              .garyStyle(),
                                                         )
                                                       ],
                                                     )
                                                   ],
-                                                )),
-                                          ],
-                                        ),
-                                      )));
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: <Widget>[
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Row(children: <Widget>[
+                                                          Icon(
+                                                            Icons.watch_later,
+                                                          ),
+                                                          SizedBox(width: 10),
+                                                          Text(
+                                                            f.format(homeCard[
+                                                                    index]
+                                                                .endEffectiveDate),
+                                                          )
+                                                        ]),
+                                                        SizedBox(width: 15),
+                                                        Row(
+                                                          children: <Widget>[
+                                                            Icon(
+                                                              Icons.drive_eta,
+                                                            ),
+                                                            SizedBox(width: 10),
+                                                            Text(
+                                                                '${homeCard[index].amount.toString()} คัน')
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Container(
+                                                          child: homeCard[index]
+                                                                      .requestStatus ==
+                                                                  'รอการยืนยัน'
+                                                              ? MaterialButton(
+                                                                  shape:
+                                                                      RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .all(
+                                                                      Radius
+                                                                          .circular(
+                                                                              5),
+                                                                    ),
+                                                                  ),
+                                                                  color: MyStyle()
+                                                                      .garyssColor,
+                                                                  child: Text(
+                                                                    homeCard[
+                                                                            index]
+                                                                        .requestStatus,
+                                                                    style: MyStyle()
+                                                                        .whiteStyle(),
+                                                                  ),
+                                                                  onPressed:
+                                                                      () {},
+                                                                )
+                                                              : errorA(),
+                                                        ),
+                                                        Container(
+                                                          child: homeCard[index]
+                                                                      .requestStatus ==
+                                                                  'รอดำเนินการ'
+                                                              ? MaterialButton(
+                                                                  shape:
+                                                                      RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .all(
+                                                                      Radius
+                                                                          .circular(
+                                                                              5),
+                                                                    ),
+                                                                  ),
+                                                                  color: MyStyle()
+                                                                      .yellowColor,
+                                                                  child: Text(
+                                                                    homeCard[
+                                                                            index]
+                                                                        .requestStatus,
+                                                                    style: MyStyle()
+                                                                        .whiteStyle(),
+                                                                  ),
+                                                                  onPressed:
+                                                                      () {},
+                                                                )
+                                                              : errorA(),
+                                                        ),
+                                                        Container(
+                                                          child: homeCard[index]
+                                                                      .requestStatus ==
+                                                                  'รอนำส่งรถ'
+                                                              ? MaterialButton(
+                                                                  shape:
+                                                                      RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .all(
+                                                                      Radius
+                                                                          .circular(
+                                                                              5),
+                                                                    ),
+                                                                  ),
+                                                                  color: MyStyle()
+                                                                      .yellowColor,
+                                                                  child: Text(
+                                                                    homeCard[
+                                                                            index]
+                                                                        .requestStatus,
+                                                                    style: MyStyle()
+                                                                        .whiteStyle(),
+                                                                  ),
+                                                                  onPressed:
+                                                                      () {},
+                                                                )
+                                                              : errorA(),
+                                                        ),
+                                                        Container(
+                                                          child: homeCard[index]
+                                                                      .requestStatus ==
+                                                                  'เสร็จสิ้น'
+                                                              ? MaterialButton(
+                                                                  shape:
+                                                                      RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .all(
+                                                                      Radius
+                                                                          .circular(
+                                                                              5),
+                                                                    ),
+                                                                  ),
+                                                                  color: MyStyle()
+                                                                      .greenColor,
+                                                                  child: Text(
+                                                                    homeCard[
+                                                                            index]
+                                                                        .requestStatus,
+                                                                    style: MyStyle()
+                                                                        .whiteStyle(),
+                                                                  ),
+                                                                  onPressed:
+                                                                      () {},
+                                                                )
+                                                              : errorA(),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: <Widget>[
+                                                    Row(
+                                                      children: <Widget>[
+                                                        Text(
+                                                            'หมายเหตุ : ${homeCard[index].remark.toString()} น.')
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      children: <Widget>[
+                                                        CircleAvatar(
+                                                          backgroundImage:
+                                                              AssetImage(
+                                                                  'assets/images/profile.jpg'),
+                                                          radius: 20,
+                                                        ),
+                                                        CircleAvatar(
+                                                          backgroundImage:
+                                                              AssetImage(
+                                                                  'assets/images/profile.jpg'),
+                                                          radius: 20,
+                                                        ),
+                                                        Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .end,
+                                                            children: <Widget>[
+                                                              Text('+10'),
+                                                              Icon(
+                                                                Icons
+                                                                    .more_horiz,
+                                                              ),
+                                                            ])
+                                                      ],
+                                                    )
+                                                  ],
+                                                )
+                                              ],
+                                            )),
+                                      ],
+                                    ),
+                                  )));
                             },
                             separatorBuilder:
                                 (BuildContext context, int index) => Divider(),

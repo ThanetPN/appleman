@@ -398,11 +398,10 @@ class RequestItem {
 }
 
 class RequestTeamMember {
-  RequestTeamMember({
-    required this.requestId,
-    required this.driverCode,
-    required this.active,
-  });
+  RequestTeamMember(
+      {required this.requestId,
+      required this.driverCode,
+      required this.active});
 
   String requestId;
   String driverCode;

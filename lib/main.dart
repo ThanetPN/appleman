@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterappleman/ui/detail/addMember/add_member.dart';
 import 'package:flutterappleman/ui/detail/camera/camera.dart';
 import 'package:flutterappleman/ui/detail/camera/picture.dart';
 import 'package:flutterappleman/ui/detail/detailSchedule.dart';
@@ -40,7 +41,8 @@ class MyApp extends StatelessWidget {
         '/picture': (context) => Picture(),
         '/evidence-car': (context) => EvidenceCar(),
         '/profile': (context) => Profile(),
-        '/profile-edit': (context) => EditProfile(),
+        '/profile-edit': (context) => EditProfile(), //AddMember
+        '/add-member': (context) => AddMember(),
       },
       debugShowCheckedModeBanner: false,
     );

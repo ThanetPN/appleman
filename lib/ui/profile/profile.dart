@@ -61,24 +61,13 @@ class _ProfileState extends State<Profile> {
       backgroundColor: MyStyle().garyAllColor,
       body: ListView(
         children: [
-          Container(
-            margin: EdgeInsets.only(top: 30),
-          ),
-          Container(
-            margin: EdgeInsets.only(
-              left: MediaQuery.of(context).size.width * 0.05,
-              right: MediaQuery.of(context).size.width * 0.05,
-              top: 10,
-              bottom: 20,
-            ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Card(
                 child: Column(
               children: [
-                Container(
-                  margin: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width * 0.05,
-                      right: MediaQuery.of(context).size.width * 0.05,
-                      top: 10),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -104,10 +93,8 @@ class _ProfileState extends State<Profile> {
                     ],
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(
-                    top: 10,
-                  ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: SizedBox(
                     width: double.infinity,
                     height: 5,
@@ -127,7 +114,7 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(20),
+                  padding: EdgeInsets.all(8.0),
                   child: Column(
                     children: [
                       Row(
@@ -276,20 +263,10 @@ class _ProfileState extends State<Profile> {
               ],
             )),
           ),
-          Container(
-            height: 50,
-            margin: EdgeInsets.only(
-              left: MediaQuery.of(context).size.width * 0.05,
-              right: MediaQuery.of(context).size.width * 0.05,
-              top: 10,
-              bottom: 20,
-            ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
             child: MaterialButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5),
-                ),
-              ),
+              height: 50,
               color: MyStyle().buttongray,
               child: Text(
                 'เปลี่ยน Password',
@@ -326,18 +303,8 @@ class _ProfileState extends State<Profile> {
                                   },
                                   child: Column(
                                     children: [
-                                      Container(
-                                        margin: EdgeInsets.only(
-                                          left: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.05,
-                                          right: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.05,
-                                          top: 30,
-                                        ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -360,18 +327,8 @@ class _ProfileState extends State<Profile> {
                                           ],
                                         ),
                                       ),
-                                      Container(
-                                        margin: EdgeInsets.only(
-                                          left: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.05,
-                                          right: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.05,
-                                          top: 20,
-                                        ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -394,18 +351,8 @@ class _ProfileState extends State<Profile> {
                                           ],
                                         ),
                                       ),
-                                      Container(
-                                        margin: EdgeInsets.only(
-                                          left: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.05,
-                                          right: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.05,
-                                          top: 20,
-                                        ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -433,29 +380,21 @@ class _ProfileState extends State<Profile> {
                                 ),
                               ],
                             ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                bottom: 30,
-                              ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
-                                  Container(
-                                    height: 50,
-                                    margin: EdgeInsets.only(
-                                      left: MediaQuery.of(context).size.width *
-                                          0.05,
-                                      right: MediaQuery.of(context).size.width *
-                                          0.05,
-                                    ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
                                     child: MaterialButton(
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(5),
                                         ),
                                       ),
-                                      color: Color(0xFFD8D8D8),
+                                      color: MyStyle().buttongray,
                                       textColor: Colors.white,
                                       onPressed: () {
                                         Navigator.pushNamed(context, '');
@@ -466,21 +405,15 @@ class _ProfileState extends State<Profile> {
                                       ),
                                     ),
                                   ),
-                                  Container(
-                                    height: 50,
-                                    margin: EdgeInsets.only(
-                                      left: MediaQuery.of(context).size.width *
-                                          0.05,
-                                      right: MediaQuery.of(context).size.width *
-                                          0.05,
-                                    ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
                                     child: MaterialButton(
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(5),
                                         ),
                                       ),
-                                      color: Color(0xFF82DD55),
+                                      color: MyStyle().buttongreen,
                                       textColor: Colors.white,
                                       onPressed: () {
                                         Navigator.pushNamed(context, '');
@@ -503,20 +436,11 @@ class _ProfileState extends State<Profile> {
               },
             ),
           ),
-          Container(
-            height: 50,
-            margin: EdgeInsets.only(
-              left: MediaQuery.of(context).size.width * 0.05,
-              right: MediaQuery.of(context).size.width * 0.05,
-              top: 50,
-              bottom: 30,
-            ),
+          SizedBox(height: 30),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
             child: MaterialButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5),
-                ),
-              ),
+              height: 50,
               color: MyStyle().buttongray,
               child: Text(
                 'LOG OUT',
